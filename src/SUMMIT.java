@@ -3,6 +3,7 @@ public class SUMMIT {
     private static int autoCount = 0;
     private Object info;
 
+    //CONSTRUCTORS
     public SUMMIT(Object info) {
 
     }
@@ -15,6 +16,7 @@ public class SUMMIT {
         this(null);
     }
 
+    //GETTERS
     public int getKey() {
         return key;
     }
@@ -23,6 +25,7 @@ public class SUMMIT {
         return null;
     }
 
+    //OUTPUT
     public String ofString() {
         String s;
         return s;
