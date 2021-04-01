@@ -5,11 +5,15 @@ public class SUMMIT {
 
     //CONSTRUCTORS
     public SUMMIT(Object info) {
-
+        ++autoCount;
+        key = autoCount;
+        this.info = info;
     }
 
     public SUMMIT(String s) {
-
+        ++autoCount;
+        key = autoCount;
+        this.info = s;
     }
 
     public SUMMIT() {
@@ -22,13 +26,13 @@ public class SUMMIT {
     }
 
     public Object getInfo() {
-        return null;
+        return info;
     }
 
     //OUTPUT
-    public String ofString() {
-        String s;
-        return s;
+    @Override
+    public String toString() {
+        return info.toString();
     }
 
 }
