@@ -64,19 +64,23 @@ public class GRAPH  {
 
     //ADD&REMOVE
     public void addSummit(SUMMIT s) {
-        if (!summits.contains(s)) summits.add(s);
-        else System.out.println("Ce sommet existe déjà");
+        boolean exist = false;
+        for (int i = 0; i < summits.size(); ++i) {
+            if (summits.get(i) == s)
+                exist = true;
+        }
+        if (!exist) {
+            summits.add(s);
+        }
     }
 
     public void removeSummit(SUMMIT s) {
-    	 if (summits.contains(s)) summits.remove(s);
-    	 else System.out.println("Ce sommet n'existe pas");
-        
+        summits.remove(s);
     }
     
     public void addBridge(BRIDGE b) {
         if (!bridges.contains(b)) bridges.add(b);
-        else System.out.println("Ce lien existe déjà");
+        else System.out.println("Ce lien existe dï¿½jï¿½");
     }
 
     public void removeBridge(BRIDGE b) {
