@@ -34,13 +34,16 @@ public class GRAPH  {
 
     //GETTERS
     public List<SUMMIT> getSummits(){return summits;}
+    
+    public SUMMIT getSpecificSummits(int i){return summits.get(i);}
+    
     public List<BRIDGE> getBridges(SUMMIT s) {
-        List<BRIDGE> bridgeDeS = new ArrayList<>();
+        List<BRIDGE> bridgesOfS = new ArrayList<>();
         for(int i=0; i<bridges.size();++i) {
-            if(bridges.get(i).getFirstSummit()==s ||bridges.get(i).getSecondSummit()==s)
-                bridgeDeS.add(bridges.get(i));
+            if(bridges.get(i).getFirstSummit().equals(s) ||bridges.get(i).getSecondSummit().equals(s))
+                bridgesOfS.add(bridges.get(i));
         }
-        return bridgeDeS;
+        return bridgesOfS;
     }
 
     public int numberOfSummit() {
@@ -51,8 +54,9 @@ public class GRAPH  {
     public void addSummit(SUMMIT s) {
         boolean exist = false;
         for (int i = 0; i < summits.size(); ++i) {
-            if (summits.get(i) == s)
+            if (summits.get(i).equals(s))
                 exist = true;
+            	System.out.println("Ce sommet existe déjà");
         }
         if (!exist) {
             summits.add(s);
@@ -60,7 +64,12 @@ public class GRAPH  {
     }
 
     public void removeSummit(SUMMIT s) {
+    	 for(BRIDGE b : this.bridges)  {
+             if(b.getFirstSummit().equals(s) ||b.getSecondSummit().equals(s))
+                 bridges.remove(b);
+         }
         summits.remove(s);
+        
     }
 
     //METHODS
