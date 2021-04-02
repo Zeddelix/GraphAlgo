@@ -256,58 +256,5 @@ public class GRAPH  {
     public String ofString() {
         return "Summits:"+summits.toString()+"\nBridges:"+bridges.toString()+"\nOriented:"+oriented+"\nValued:"+valued;
     }
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.deepHashCode(Adj);
-		result = prime * result + Arrays.hashCode(Aps);
-		result = prime * result + Arrays.hashCode(Fs);
-		result = prime * result + ((bridges == null) ? 0 : bridges.hashCode());
-		result = prime * result + (oriented ? 1231 : 1237);
-		result = prime * result + ((summits == null) ? 0 : summits.hashCode());
-		result = prime * result + (valued ? 1231 : 1237);
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GRAPH other = (GRAPH) obj;
-		if (!Arrays.deepEquals(Adj, other.Adj))
-			return false;
-		if (!Arrays.equals(Aps, other.Aps))
-			return false;
-		if (!Arrays.equals(Fs, other.Fs))
-			return false;
-		if (bridges == null) {
-			if (other.bridges != null)
-				return false;
-		} else if (!bridges.equals(other.bridges))
-			return false;
-		if (oriented != other.oriented)
-			return false;
-		if (summits == null) {
-			if (other.summits != null)
-				return false;
-		} else if (!summits.equals(other.summits))
-			return false;
-		if (valued != other.valued)
-			return false;
-		return true;
-	}
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
-		return super.clone();
-	}
 }
-
-	
-
-	
 
