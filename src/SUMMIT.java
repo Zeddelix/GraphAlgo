@@ -15,9 +15,16 @@ public class SUMMIT {
         key = autoCount;
         this.info = s;
     }
+    
+    public SUMMIT(int i) {
+    	this.key=i;
+    	
+    }
 
     public SUMMIT() {
-        this(null);
+    	++autoCount;
+        key = autoCount;
+        this.info=null;
     }
 
     //GETTERS

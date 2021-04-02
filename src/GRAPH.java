@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GRAPH  {
     private List<SUMMIT> summits;
     private List<BRIDGE> bridges;
+    private boolean[][] Adj;
     private boolean oriented, valued;
 
     //CONSTRUCTORS
@@ -12,6 +14,21 @@ public class GRAPH  {
         this.bridges = bridges;
         this.oriented = oriented;
         this.valued = valued;
+        
+        int Nb = summits.size();
+    	boolean[][] adj = new boolean[Nb][Nb];
+    	for (BRIDGE b : bridges ) {
+    			adj[b.getFirstSummit().getKey()][b.getSecondSummit().getKey()] = true;
+    	}
+    	if ( this.oriented==false) {	// Si le graph est non orienté, la matrice est symetrique
+    		for (int i=0 ; i<Nb ; i++) {
+    			for (int j=0 ; j<Nb ; j++) {
+    				if (adj[i][j] == true) adj[j][i]=true;
+    			}
+    		}
+    	}
+    	
+    	this.Adj=adj;
     }
     public GRAPH (List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) {
         this(summits, oriented, bridges, true);
@@ -28,8 +45,26 @@ public class GRAPH  {
     public GRAPH (double []fs, double []aps) {
         //Transformation des tableau fs aps en list de sommets et arcs
     }
-    public GRAPH (double [][]adjacents) {
-        //Transforamtion de la matrice d'adjacences en list de sommets et d'arcs
+    public GRAPH (boolean [][]adjacents, boolean oriented) {
+        int numberOfSummit = adjacents.length;
+        List<SUMMIT> summits = new ArrayList<>();
+        List<BRIDGE> bridges = new ArrayList<>();
+        for (int i = 0; i<adjacents.length; i++) { // Ajout des sommets dans la liste
+        	SUMMIT s = new SUMMIT();
+        	summits.add(s);
+        }
+        for (int i = 0; i<adjacents.length; i++) { // Ajout des liens. Doit être séparé puisqu'il nous faut d'abord la totalité des sommets.
+        	for (int j=0 ; j<adjacents.length; j++) {
+        		if (adjacents[i][j]==true) {
+        			BRIDGE b = new BRIDGE(summits.get(i), summits.get(j));
+        		}
+        	}
+        }
+        this.summits=summits;
+        this.bridges=bridges;
+        this.oriented=oriented;
+        this.valued=false;
+        
     }
 
     //GETTERS
@@ -61,6 +96,10 @@ public class GRAPH  {
     public boolean isValued() {
     	return valued;
     }
+    
+    public boolean[][] getAdjacent() {
+    	return Adj;
+    }
 
     //ADD&REMOVE
     public void addSummit(SUMMIT s) {
@@ -80,7 +119,7 @@ public class GRAPH  {
     
     public void addBridge(BRIDGE b) {
         if (!bridges.contains(b)) bridges.add(b);
-        else System.out.println("Ce lien existe dï¿½jï¿½");
+        else System.out.println("Ce lien existe deja");
     }
 
     public void removeBridge(BRIDGE b) {
@@ -123,6 +162,10 @@ public class GRAPH  {
     }
 
     //OUTPUT
+    
+   
+    
+    
     public void writeTheGraphInAFile(String[] args) {
 
     }
