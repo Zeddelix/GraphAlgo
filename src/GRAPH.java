@@ -23,8 +23,7 @@ public class GRAPH  {
     			adj[b.getFirstSummit().getKey()][b.getSecondSummit().getKey()] = true;
     			fsSize++;
     	}
-    	
-    	
+
     	this.Adj=adj;
     	
     	int[] Aps = new int[Nb];
@@ -47,9 +46,6 @@ public class GRAPH  {
     	
     	this.Fs=Fs;
     	this.Aps=Aps;
-    	
-    	
-    	
     }
     public GRAPH (List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) {
         this(summits, oriented, bridges, true);
@@ -71,9 +67,7 @@ public class GRAPH  {
         this.oriented=false;
         this.valued=false;
     }
-    public GRAPH (double []fs, double []aps) {
-        //Transformation des tableau fs aps en list de sommets et arcs
-    }
+
     public GRAPH (boolean [][]adjacents, boolean oriented) {
     	
     	this.Adj=adjacents;
@@ -84,7 +78,7 @@ public class GRAPH  {
         	SUMMIT s = new SUMMIT();
         	summits.add(s);
         }
-        for (int i = 0; i<adjacents.length; i++) { // Ajout des liens. Doit �tre s�par� puisqu'il nous faut d'abord la totalit� des sommets.
+        for (int i = 0; i<adjacents.length; i++) { // Ajout des liens. Doit �tre s�par� puisqu'il nous faut d'abord la totalit� des sommets.
         	for (int j=0 ; j<adjacents.length; j++) {
         		if (adjacents[i][j]==true) {
         			BRIDGE b = new BRIDGE(summits.get(i), summits.get(j));
@@ -120,6 +114,11 @@ public class GRAPH  {
     	this.bridges=bridges;
     	this.oriented=oriented;
     	this.valued=valued;
+    }
+
+    public GRAPH (int []fs, int []aps) {
+        this(fs,1,aps,1);
+        //Transformation des tableau fs aps en list de sommets et arcs
     }
     
     public GRAPH (int[] Fs, int[] Aps, boolean valued) {
@@ -221,6 +220,54 @@ public class GRAPH  {
     }
 
     public void tarjan() {
+        //Déclaration des variables utilisées
+        List<Integer> NUM = new ArrayList<Integer>(), MU = new ArrayList<Integer>(), PREM = new ArrayList<Integer>(), PILCH = new ArrayList<Integer>(), CFC = new ArrayList<Integer>(), TARJ = new ArrayList<Integer>();
+        List<Boolean> ENTARJ = new ArrayList<Boolean>();
+        List<BRIDGE> bridge = bridges;
+        int size = summits.size();
+
+        //Initialisation de certaines List
+        NUM.add(size);
+        MU.add(size);
+        PILCH.add(size);
+        CFC.add(size);
+        ENTARJ.add(false);
+        for(int i = 1; i < size; ++i) {
+            NUM.add(0);
+            MU.add(0);
+            PILCH.add(0);
+            CFC.add(0);
+            ENTARJ.add(false);
+        }
+
+        int sommet = summits.get(0).getKey(); //Sommet traité
+        //Boucle de traitement
+        for(int i = 0; i < size-1; ++i) {
+
+            //Actualisation des Lists
+            NUM.set(sommet, i + 1);
+            ENTARJ.set(sommet, true);
+            TARJ.add(sommet);
+            if (TARJ.size()>1)
+                PILCH.set(sommet, TARJ.get(TARJ.size()-1));
+            else
+                PILCH.set(sommet,0);
+
+            //Vérification d'un lien suivant
+            int j = 0;
+            while(bridge.get(j).getFirstSummit() == sommet && ENTARJ.get(bridge.get(j).getSecondSummit().getKey()) == true) { //tant qu'il y a des liens avec le sommet traité && que le lien a été traité
+                ++j;
+            }
+
+            if(ENTARJ.get(bridge.get(j).getSecondSummit().getKey()) != true) { //Si on a trouvé un lien pas traité on le défini en sommet courant et on fait la boucle de traitement
+                sommet = bridge.get(j).getSecondSummit().getKey();
+            }else{ //Si on ne trouve pas de lien, on calcul MU
+                MU.set(sommet,Math.min(Math.min( /*nouvelle numérotation du sommet*/NUM.get(sommet), /* */b), /*fronde&LTFC*/c ));
+            }
+
+        }
+
+
 
     }
 
@@ -253,7 +300,8 @@ public class GRAPH  {
 
     }
 
-    public String ofString() {
+    @Override
+    public String toString() {
         return "Summits:"+summits.toString()+"\nBridges:"+bridges.toString()+"\nOriented:"+oriented+"\nValued:"+valued;
     }
 }
