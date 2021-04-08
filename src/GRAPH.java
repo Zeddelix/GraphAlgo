@@ -231,9 +231,10 @@ public class GRAPH  {
         return true;
     }
 
-    private int prochainLien(int summit, List<BRIDGE> bridges, List<Boolean>traite) {
+    private int prochainLien(int summit, List<Boolean>traite, List<Integer>NUM) {
         int i = 0;
-        while(bridges.get(i).getFirstSummit().getKey() == summits.get(summit).getKey() && traite.get(i) == true) {
+        while(bridges.get(i).getFirstSummit().getKey() != summits.get(summit).getKey()) { ++i;}// On va jusqu'au bridges concernant le sommet traité
+        while(bridges.get(i).getFirstSummit().getKey() == summits.get(summit).getKey() && traite.get(i) == true && NUM.get(bridges.get(i).getSecondSummit().getKey()) == 0) {
             ++i;
         }
 
@@ -242,7 +243,21 @@ public class GRAPH  {
         return -1; //On est à la fin des liens du sommet sans en trouvé un non traité
     }
 
-    private void calculTarjan(List<Integer> NUM, List<Integer> MU, List<Integer> PREM, List<Integer> PILCH, List<Integer> CFC, List<Integer> TARJ, List<Boolean> ENTARJ, List<Boolean> traite ) {
+    private int minFrondeLTFC(int summit, List<Integer>NUM) {
+        int min = Integer.MIN_VALUE, i = 0;
+        while(bridges.get(i).getFirstSummit().getKey() != summits.get(summit).getKey()) { ++i;}// On va jusqu'au bridges concernant le sommet traité
+        while(bridges.get(i).getFirstSummit().getKey() == summits.get(summit).getKey() && bridges.get(i).getSecondSummit().getKey() < summit && NUM.get(bridges.get(i).getSecondSummit().getKey()) != 0) {
+            if(min > NUM.get(bridges.get(i).getSecondSummit().getKey())) {
+                min = NUM.get(bridges.get(i).getSecondSummit().getKey());
+            }
+        }
+        return min;
+    }
+
+    public void tarjan() {
+        //Déclaration des variables utilisées
+        List<Integer> NUM = new ArrayList<Integer>(), MU = new ArrayList<Integer>(), PREM = new ArrayList<Integer>(), PILCH = new ArrayList<Integer>(), CFC = new ArrayList<Integer>(), TARJ = new ArrayList<Integer>();
+        List<Boolean> ENTARJ = new ArrayList<Boolean>(), traite = new ArrayList<Boolean>();
 
         int size = summits.size();
         //Initialisation de certaines List
@@ -250,6 +265,7 @@ public class GRAPH  {
         MU.add(size);
         PILCH.add(size);
         CFC.add(size);
+        PREM.add(0);
         ENTARJ.add(false);
         for(int i = 1; i < size; ++i) {
             NUM.add(0);
@@ -265,15 +281,15 @@ public class GRAPH  {
 
         //Boucle de traitement
         int sommet = summits.get(0).getKey(); //Sommet traité
-        int lien, nouveauSommet = 0;
+        int lien, nouveauSommet = 0, groupe =0;
         while(!allBridgesProcessed(traite)) {
-            if ((lien = prochainLien(sommet, bridges, traite)) != -1) { //Si il y a 1 lien à traiter
+            if ((lien = prochainLien(sommet, traite)) != -1) { //Si il y a 1 lien à traiter
                 //MAJ des tableaux
                 NUM.set(sommet, ++nouveauSommet);
                 ENTARJ.set(sommet, true);
                 TARJ.add(sommet);
                 if (TARJ.size()>1)
-                    PILCH.set(sommet, TARJ.get(TARJ.size()-1));
+                    PILCH.set(sommet, TARJ.get(TARJ.size()-2));
                 else
                     PILCH.set(sommet,0);
 
@@ -295,53 +311,32 @@ public class GRAPH  {
 
 
                 //Calcul de MU
-                MU.set(sommet,Math.min(Math.min( /*nouvelle numérotation du sommet*/NUM.get(sommet), /*MU des sucesseurs */pps), /*fronde&LTFC*/c ));
+                MU.set(sommet,Math.min(Math.min(/*nouvelle numérotation du sommet*/NUM.get(sommet), /*MU des sucesseurs */pps), /*fronde&LTFC*/minFrondeLTFC(sommet, NUM)));
 
                 if(MU.get(sommet) == NUM.get(sommet)) {
-                    //Remplir PREM & CFC
-
-
-                    //Vider TARJ des sommets fini (ceux dont on a calculer MU)
-
-                    //marq
+                    //Remplir PREM & CFC, Update TARJ & ENTARJ
+                    PREM.add(TARJ.get(TARJ.size()-1));
+                    PREM.set(0,PREM.get(0)+1);
+                    ++groupe;
+                    for(int i = TARJ.size()-1; i>= 0; --i) {
+                        if(MU.get(TARJ.get(i)) != Integer.MAX_VALUE) {
+                            CFC.set(TARJ.get(i), groupe);
+                            ENTARJ.set(TARJ.get(i), false);
+                            TARJ.remove(TARJ.get(i));
+                        }
+                    }
 
                 }else {
                     //revenir sur le sommet précédent
+                    int i = TARJ.size()-1;
+                    while(TARJ.get(i) != sommet) {
+                        --i;
+                    }
+                    sommet = TARJ.get(i-1);
 
                 }
             }
         }
-
-
-        /*
-        for(int i = 0; i < size-1; ++i) {
-
-            //Actualisation des Lists
-            NUM.set(sommet, i + 1);
-            ENTARJ.set(sommet, true);
-            TARJ.add(sommet);
-            if (TARJ.size()>1)
-                PILCH.set(sommet, TARJ.get(TARJ.size()-1));
-            else
-                PILCH.set(sommet,0);
-
-            //Vérification d'un lien suivant
-
-
-            if(ENTARJ.get(bridges.get(j).getSecondSummit().getKey()) != true) { //Si on a trouvé un lien pas traité on le défini en sommet courant et on fait la boucle de traitement
-                sommet = bridges.get(j).getSecondSummit().getKey();
-            }else{ //Si on ne trouve pas de lien, on calcul MU
-                MU.set(sommet,Math.min(Math.min( /*nouvelle numérotation du sommet*/NUM.get(sommet), /*MU des sucesseurs */b), /*fronde&LTFC*/c ));
-            }
-            */
-    }
-
-    public void tarjan() {
-        //Déclaration des variables utilisées
-        List<Integer> NUM = new ArrayList<Integer>(), MU = new ArrayList<Integer>(), PREM = new ArrayList<Integer>(), PILCH = new ArrayList<Integer>(), CFC = new ArrayList<Integer>(), TARJ = new ArrayList<Integer>();
-        List<Boolean> ENTARJ = new ArrayList<Boolean>(), traite = new ArrayList<Boolean>();
-
-        calculTarjan(NUM, MU, PREM, PILCH, CFC, TARJ, ENTARJ, traite);
     }
 
     public void djikstra() {
