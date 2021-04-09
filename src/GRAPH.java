@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class GRAPH  {
@@ -128,9 +129,46 @@ public class GRAPH  {
     	this(Fs, true, Aps, true);
     }
 
-    
-    
-    
+
+    public GRAPH pruferToGraph(int[] prufer){
+        ArrayList<Integer> L = new ArrayList<>();
+        ArrayList<Integer> S = new ArrayList<>();
+        ArrayList<SUMMIT> summits = new ArrayList<>();
+        ArrayList<BRIDGE> bridges = new ArrayList<>();
+
+        for(int i : prufer)
+            S.add(i);
+
+        for (int i = 1; i <= prufer.length; ++i) {
+            summits.add(new SUMMIT());
+            L.add(i);
+        }
+
+        for(int i  = 0; i < S.size()-1; ++i){
+            int j = i+1;
+            while (j < L.size() && S.contains(L.get(j)))
+                ++j;
+            bridges.add(new BRIDGE(summits.get(i), summits.get(j)));
+            L.remove(j);
+            S.remove(i);
+        }
+
+        return new GRAPH(summits, false, bridges);
+    }
+
+    public int smallestValue(ArrayList<Integer> list){
+        int smallest = 0;
+        for (int i = 1; i < list.size(); ++i){
+            if(smallest > list.get(i))
+                smallest = i;
+        }
+        return smallest;
+    }
+
+
+
+
+
 
     //GETTERS
     public List<SUMMIT> getSummits(){return summits;}
@@ -212,6 +250,10 @@ public class GRAPH  {
     //METHODS
     public int distance(SUMMIT s1) {
     	return 0;
+    }
+
+    public int[][]matDist(){
+        return null;
     }
 
     public int[] ListSummitRank(){
@@ -388,20 +430,279 @@ public class GRAPH  {
         return g;
     }
 
+    private ArrayList<Integer> distances = new ArrayList<>();
+    private HashMap<SUMMIT, SUMMIT> path = new HashMap<>();
+    private ArrayList<SUMMIT> uncheckSummits = new ArrayList<>();
+    private ArrayList<SUMMIT> checkedSummits = new ArrayList<>();
     public void djikstra() {
+        this.djikstra(this.getSpecificSummits(0));
+    }
+    public void djikstra(int summit) {
+        this.djikstra(this.getSpecificSummits(summit));
+    }
+    public void djikstra(SUMMIT origin) {
+        for (BRIDGE bridge : this.bridges) {
+            if (bridge.getWeight() < 0) {
+                throw new RuntimeException("djikstra can't use negative values.");
+            }
+        }
+        for (int i = 0; i < this.getSummits().size(); ++i)
+            this.distances.add(Integer.MAX_VALUE);
+        this.distances.set(origin.getKey(), 0);
+
+        this.path.put(this.getSpecificSummits(origin.getKey()), this.getSpecificSummits(origin.getKey()));
+
+
+        SUMMIT departure = this.getSpecificSummits(origin.getKey());
+
+        this.uncheckSummits.add(departure);
+        while (this.uncheckSummits.size() > 0){
+            SUMMIT summit = this.getMinimum();
+            this.checkedSummits.add(summit);
+            this.uncheckSummits.remove(summit);
+            minimalDistances(summit);
+        }
+    }
+
+    private void minimalDistances(SUMMIT summit) {
+        for (BRIDGE target : this.getSummitBridges(summit)) {
+            SUMMIT targetSummit;
+            if(target.getFirstSummit() != summit)
+                targetSummit = target.getFirstSummit();
+            else
+                targetSummit = target.getSecondSummit();
+
+            if (getShortestPath(targetSummit) > getShortestPath(summit) + target.getWeight()) {
+                this.distances.set(targetSummit.getKey(), getShortestPath(summit) + target.getWeight());
+                this.path.put(summit, targetSummit);
+                this.uncheckSummits.add(targetSummit);
+            }
+        }
 
     }
 
-    public void Kruskal() {
+    private int getDistance(SUMMIT departure, SUMMIT arrival) {
+        for (BRIDGE bridge : this.bridges) {
+            if (bridge.getFirstSummit().equals(departure) && bridge.getFirstSummit().equals(arrival))
+                return bridge.getWeight();
+        }
+        System.out.println("[LOG] Error, this situation shouldn't happen. " + departure.getKey() + " is not connected with " + arrival.getKey()+".");
+        return Integer.MAX_VALUE;
+    }
+
+    private SUMMIT getMinimum() {
+        SUMMIT minimum = null;
+
+        for (SUMMIT summit : this.summits) {
+            if (minimum != null) {
+                if (getShortestPath(summit) < getShortestPath(minimum))
+                    minimum = summit;
+            }
+            else minimum = summit;
+        }
+        return minimum;
+    }
+
+    private int getShortestPath(SUMMIT arrival) {
+        return this.distances.get(arrival.getKey());
+    }
+
+    public void Kruskal(GRAPH reduit) {
+
+        int n = summits.size();
+        int[] prem = new int[n+1];
+        int[] pilch = new int[n+1];
+        int[] cfc= new int[n+1];
+        int[] nbElem= new int[n+1];
+
+        for(int i = 1;i <= n;i++){
+            prem[i] = i;
+            pilch[i] = 0;
+            cfc[i] = i;
+            nbElem[i] = i;
+        }
+
+        //Trie des arêtes
+        int p;
+        for(int i = 0; i < bridges.size()-1;i++) {
+            for (int j = i + 1; j < bridges.size(); j++) {
+                if (bridges.get(j).getWeight() < bridges.get(i).getWeight() ||
+                        (bridges.get(j).getWeight() == bridges.get(j).getWeight() && bridges.get(j).getFirstSummit().getKey() < bridges.get(i).getSecondSummit().getKey()) ||
+                        (bridges.get(j).getWeight() == bridges.get(i).getWeight() && bridges.get(j).getSecondSummit().getKey() < bridges.get(i).getSecondSummit().getKey())) {
+                    p = bridges.get(j).getWeight();
+                    bridges.get(j).setWeight(bridges.get(j).getWeight());
+                    bridges.get(i).setWeight(p);
+                }
+            }
+        }
+
+        //kruskal
+        reduit.bridges.clear();
+        int x;
+        int y;
+        int i = 0, j =0;
+        while (j < n-1) {
+            BRIDGE ar = bridges.get(i);
+            x = cfc[ar.getFirstSummit().getKey()];
+            y = cfc[ar.getSecondSummit().getKey()];
+            if (x != y) {
+                reduit.bridges.add(bridges.get(i));
+                j++;
+                /////////////// fusionner////////////////
+                if (nbElem[i] < nbElem[j]) {
+                    int aux = i;
+                    i = j;
+                    j = aux;
+                }
+                int s = prem[j];
+                cfc[s] = i;
+                while (pilch[s] != 0) {
+                    s = pilch[s];
+                    cfc[s] = i;
+                }
+                pilch[s] = prem[i];
+                prem[i] = prem[j];
+                nbElem[i] += nbElem[j];
+            }
+            i++;
+        }
+    }
+
+
+    public int[][] Dantzig() {
+
+        int [][] gr = matDist();
+        int n = summits.size();
+        int[][] mat = new int[n][n];
+        for (int i = 1;i <= n ;i++) {
+            for (int j = 1; i <= n; i++) {
+                if (i == j) {
+                    mat[i][i] = 0;
+                } else {
+                    mat[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+        for(int k = 1 ; k <= n;k++) {
+            for (int i = 1; i < k; i++) {
+                int min1 = 0, min2 = 0;
+                for (int j = k; j >= 1; j--) {
+                    int valMin1 = gr[k + 1][j] + mat[j][i];
+                    int valMin2 = gr[i][j] + mat[j][k + 1];
+                    if (valMin1 < min1) {
+                        min1 = valMin1;
+                    }
+                    if (valMin2 < min2) {
+                        min2 = valMin2;
+                    }
+                }
+                mat[k + 1][i] = min1;
+                mat[i][k + 1] = min2;
+            }
+            int t=0;
+            for (int j = k; j >= 1; j--) {
+                t = mat[k + 1][j] + mat[j][k + 1];
+            }
+
+            if (t < 0) {
+                break;
+            } else {
+                for(int i = 1;i <= k;i++) {
+                    for(int j = 1;j <= k;j++) {
+                        if (mat[i][j] > (mat[i][k+1] + mat[k+1][j])) {
+                            mat[i][j] = mat[i][k + 1] + mat[k + 1][j];
+                        }
+                    }
+                }
+            }
+        }
+        return mat;
 
     }
-    
-    public void Dantzig() {
+    public ArrayList<Integer> toPruferCode(){
+        ArrayList<Integer> prufer = new ArrayList<>();
+        for (int i = 0; i < this.summits.size()-1; ++i)
+            prufer.add(-1);
 
+        ArrayList<Integer> deleted = new ArrayList<>();
+
+        while (prufer.contains(-1)){
+            SUMMIT s = this.summits.get(this.smallestLeaf(deleted));
+            SUMMIT voisin = getNeighbour(s, deleted);
+            prufer.add(voisin.getKey());
+        }
+        return prufer;
     }
-    
-    public void Prufer() {
-    	
+
+    private SUMMIT getNeighbour(SUMMIT s, ArrayList<Integer> deleted){
+        for(BRIDGE bridge : this.bridges){
+            if(bridge.contains(s) && !deleted.contains(bridge.getFirstSummit().getKey()) && !deleted.contains(bridge.getSecondSummit().getKey())){
+                SUMMIT voisin;
+                if(bridge.getFirstSummit() == s)
+                    voisin = bridge.getSecondSummit();
+                else
+                    voisin = bridge.getFirstSummit();
+                return voisin;
+            }
+        }
+        throw new RuntimeException("[LOG] Error getNeighbour");
+    }
+
+
+    private int smallestLeaf(ArrayList<Integer> deleted){
+        int min = Integer.MAX_VALUE;
+        for (BRIDGE bridge : this.bridges){
+            if(bridge.isLeaf() || bridge.isLeafWithDeleteSummit(deleted) ){
+                SUMMIT s;
+                if(bridge.getSecondSummit() != null)
+                    s = bridge.getSecondSummit();
+                else
+                    s = bridge.getFirstSummit();
+
+                if(min > s.getKey() && !deleted.contains(s.getKey()))
+                    min = s.getKey();
+            }
+        }
+        return min;
+    }
+
+
+    void decodagePrufer(int[] d_tableauPrufer)
+    {
+        int size = this.summits.size()+2;
+        ArrayList<Integer> aps = new ArrayList<>();
+        ArrayList<Integer> fs = new ArrayList<>();
+        for(int i = 0; i < size; ++i) {
+            aps.add(0);
+            fs.add(0);
+        }
+
+        ArrayList<Boolean> summitUnchecked = new ArrayList<>();
+        for (int i = 0; i < size; ++i)
+            summitUnchecked.add(true);
+
+
+
+        ArrayList<Integer> iteration = new ArrayList<>();
+        for (int i = 0; i < size; ++i)
+            iteration.add(0);
+
+        for(int i=1; i<=d_tableauPrufer[0]; i++)
+            iteration.set(d_tableauPrufer[i], iteration.get(d_tableauPrufer[0])+1);
+
+        for(int i=1; i<= d_tableauPrufer[0]; i++) {
+
+            for(int j=1; j<= size; j++) {
+                if((summitUnchecked.get(j)) && iteration.get(j)==0) {
+                    summitUnchecked.set(j, false);
+                    iteration.set(d_tableauPrufer[i], iteration.get(d_tableauPrufer[i]-1));
+                    fs.add(j, d_tableauPrufer[i]);
+
+                    break;
+                }
+            }
+
+        }
     }
 
     //OUTPUT
