@@ -84,7 +84,7 @@ public class GRAPH  {
         	SUMMIT s = new SUMMIT();
         	summits.add(s);
         }
-        for (int i = 0; i<adjacents.length; i++) { // Ajout des liens. Doit être séparé puisqu'il nous faut d'abord la totalité des sommets.
+        for (int i = 0; i<adjacents.length; i++) { // Ajout des liens. Doit ï¿½tre sï¿½parï¿½ puisqu'il nous faut d'abord la totalitï¿½ des sommets.
         	for (int j=0 ; j<adjacents.length; j++) {
         		if (adjacents[i][j]==true) {
         			BRIDGE b = new BRIDGE(summits.get(i), summits.get(j));
@@ -208,8 +208,8 @@ public class GRAPH  {
     }
 
     //METHODS
-    public int distance(SUMMIT s1) {
-    	return 0;
+    public int[][] distance(SUMMIT s1) {
+    	return null;
     }
 
     public int[] ListSummitRank(){
@@ -228,11 +228,115 @@ public class GRAPH  {
 
     }
 
-    public void Kruskal() {
+    public void Kruskal(GRAPH reduit) {
 
+        int n = summits.size();
+        int[] prem = new int[n+1];
+        int[] pilch = new int[n+1];
+        int[] cfc= new int[n+1];
+        int[] nbElem= new int[n+1];
+
+        for(int i = 1;i <= n;i++){
+            prem[i] = i;
+            pilch[i] = 0;
+            cfc[i] = i;
+            nbElem[i] = i;
+        }
+
+        //Trie des arÃªtes
+        int p;
+        for(int i = 0; i < bridges.size()-1;i++) {
+            for (int j = i + 1; j < bridges.size(); j++) {
+                if (bridges.get(j).getWeight() < bridges.get(i).getWeight() ||
+                        (bridges.get(j).getWeight() == bridges.get(j).getWeight() && bridges.get(j).getFirstSummit().getKey() < bridges.get(i).getSecondSummit().getKey()) ||
+                        (bridges.get(j).getWeight() == bridges.get(i).getWeight() && bridges.get(j).getSecondSummit().getKey() < bridges.get(i).getSecondSummit().getKey())) {
+                    p = bridges.get(j).getWeight();
+                    bridges.get(j).setWeight(bridges.get(j).getWeight());
+                    bridges.get(i).setWeight(p);
+                }
+            }
+        }
+
+        //kruskal
+        reduit.bridges.clear();
+        int x;
+        int y;
+        int i = 0, j =0;
+        while (j < n-1) {
+            BRIDGE ar = bridges.get(i);
+            x = cfc[ar.getFirstSummit().getKey()];
+            y = cfc[ar.getSecondSummit().getKey()];
+            if (x != y) {
+                reduit.bridges.add(bridges.get(i));
+                j++;
+                /////////////// fusionner////////////////
+                if (nbElem[i] < nbElem[j]) {
+                    int aux = i;
+                    i = j;
+                    j = aux;
+                }
+                int s = prem[j];
+                cfc[s] = i;
+                while (pilch[s] != 0) {
+                    s = pilch[s];
+                    cfc[s] = i;
+                }
+                pilch[s] = prem[i];
+                prem[i] = prem[j];
+                nbElem[i] += nbElem[j];
+            }
+            i++;
+        }
     }
-    
-    public void Dantzig() {
+
+
+    public int[][] Dantzig() {
+
+        int [][] gr = distance();
+        int n = summits.size();
+        int[][] mat = new int[n][n];
+        for (int i = 1;i <= n ;i++) {
+            for (int j = 1; i <= n; i++) {
+                if (i == j) {
+                    mat[i][i] = 0;
+                } else {
+                    mat[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+        for(int k = 1 ; k <= n;k++) {
+            for (int i = 1; i < k; i++) {
+                int min1 = 0, min2 = 0;
+                for (int j = k; j >= 1; j--) {
+                    int valMin1 = gr[k + 1][j] + mat[j][i];
+                    int valMin2 = gr[i][j] + mat[j][k + 1];
+                    if (valMin1 < min1) {
+                        min1 = valMin1;
+                    }
+                    if (valMin2 < min2) {
+                        min2 = valMin2;
+                    }
+                }
+                mat[k + 1][i] = min1;
+                mat[i][k + 1] = min2;
+            }
+            int t=0;
+            for (int j = k; j >= 1; j--) {
+                t = mat[k + 1][j] + mat[j][k + 1];
+            }
+
+            if (t < 0) {
+                break;
+            } else {
+                for(int i = 1;i <= k;i++) {
+                    for(int j = 1;j <= k;j++) {
+                        if (mat[i][j] > (mat[i][k+1] + mat[k+1][j])) {
+                            mat[i][j] = mat[i][k + 1] + mat[k + 1][j];
+                        }
+                    }
+                }
+            }
+        }
 
     }
     
