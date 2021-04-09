@@ -18,7 +18,6 @@ public class SUMMIT {
     
     public SUMMIT(int i) {
     	this.key=i;
-    	
     }
 
     public SUMMIT() {
@@ -27,7 +26,7 @@ public class SUMMIT {
         this.info=null;
     }
 
-    //GETTERS
+    //GETTERS & SETTERS
     public int getKey() {
         return key;
     }
@@ -39,6 +38,8 @@ public class SUMMIT {
     public int getAutocount() {
     	return autoCount;
     }
+
+    public void setInfo(Object info) {this.info = info;};
     
 
     //OUTPUT
