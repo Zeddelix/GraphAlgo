@@ -1,3 +1,5 @@
+import kotlin.reflect.jvm.internal.impl.resolve.constants.StringValue;
+
 public class SUMMIT {
     private int key;
     private static int autoCount = 0;
@@ -18,6 +20,7 @@ public class SUMMIT {
     
     public SUMMIT(int i) {
     	this.key=i;
+    	if (autoCount<i) autoCount=i;
     }
 
     public SUMMIT() {
@@ -45,7 +48,11 @@ public class SUMMIT {
     //OUTPUT
     @Override
     public String toString() {
-        return info.toString();
+        String s="(";
+        if (info ==null) s+=String.valueOf(key);
+        else s+= info.toString();
+        s+=")";
+        return s;
     }
 
 	@Override
