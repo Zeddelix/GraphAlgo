@@ -55,6 +55,7 @@ public class SUMMIT {
         return s;
     }
 
+<<<<<<< HEAD
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -92,5 +93,9 @@ public class SUMMIT {
     
 	
     
+=======
+
+
+>>>>>>> Lukas
 
 }
