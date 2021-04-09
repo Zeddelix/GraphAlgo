@@ -210,8 +210,12 @@ public class GRAPH  {
     }
 
     //METHODS
-    public int[][] distance(SUMMIT s1) {
-    	return null;
+    public int distance(SUMMIT s1) {
+    	return 0;
+    }
+
+    public int[][]matDist(){
+        return null;
     }
 
     public int[] ListSummitRank(){
@@ -456,7 +460,7 @@ public class GRAPH  {
 
     public int[][] Dantzig() {
 
-        int [][] gr = distance();
+        int [][] gr = matDist();
         int n = summits.size();
         int[][] mat = new int[n][n];
         for (int i = 1;i <= n ;i++) {
