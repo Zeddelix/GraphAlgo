@@ -3,10 +3,21 @@
   <component name="ChangeListManager">
     <list default="true" id="bea80e4d-5182-4573-88b8-ef1d07b5f3e6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPH.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPH.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPHALGO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPHALGO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GRAPH.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GRAPH.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GRAPHALGO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GRAPHALGO.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/BRIDGE.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/BRIDGE.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPH.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPH.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPHALGO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPHALGO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/SUMMIT.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/SUMMIT.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BRIDGE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BRIDGE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GRAPH.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GRAPH.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GRAPHALGO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GRAPHALGO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SUMMIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SUMMIT.java" afterDir="false" />
+>>>>>>> Lukas
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,13 +63,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+<<<<<<< HEAD
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+=======
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+>>>>>>> Lukas
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
+<<<<<<< HEAD
       <option name="TEST_OBJECT" value="class" />
+=======
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+>>>>>>> Lukas
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -78,7 +99,11 @@
       <option name="presentableId" value="Default" />
       <updated>1616074793074</updated>
       <workItem from="1616074794713" duration="140000" />
+<<<<<<< HEAD
       <workItem from="1617957573500" duration="1295000" />
+=======
+      <workItem from="1618000409540" duration="178000" />
+>>>>>>> Lukas
     </task>
     <servers />
   </component>
@@ -86,6 +111,7 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+<<<<<<< HEAD
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -95,6 +121,8 @@
         </entry>
       </map>
     </option>
+=======
+>>>>>>> Lukas
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
