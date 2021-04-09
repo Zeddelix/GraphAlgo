@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class GRAPH  {
     private List<SUMMIT> summits;
@@ -460,47 +457,84 @@ public class GRAPH  {
     }
 
     private ArrayList<Integer> distances = new ArrayList<>();
-    private HashMap<SUMMIT, SUMMIT> path = new HashMap<>();
+    private ArrayList<Integer> pred = new ArrayList<>();
     private ArrayList<SUMMIT> uncheckSummits = new ArrayList<>();
     private ArrayList<SUMMIT> checkedSummits = new ArrayList<>();
 
-    public GRAPH djikstra() {
+    /*public GRAPH djikstra() {
         return this.djikstra(this.getSpecificSummits(0));
     }
     public GRAPH djikstra(int summit) {
         return this.djikstra(this.getSpecificSummits(summit));
-    }
+    }*/
     public GRAPH djikstra(SUMMIT origin) {
         for (BRIDGE bridge : this.bridges) {
             if (bridge.getWeight() < 0) {
                 throw new RuntimeException("djikstra can't use negative values.");
             }
         }
-        for (int i = 0; i <= this.getSummits().size(); ++i)
+        for (int i = 0; i <= this.getSummits().size(); ++i){
             this.distances.add(Integer.MAX_VALUE);
+            this.pred.add(0);
+        }
+
         this.distances.set(origin.getKey(), 0);
+        this.pred.set(origin.getKey(),0);
 
-        this.path.put(this.getSpecificSummits(origin.getKey()), this.getSpecificSummits(origin.getKey()));
+        while (checkedSummits.size()<summits.size()){
+            for (BRIDGE b : bridges){
+                if (b.getFirstSummit()==origin) uncheckSummits.add(b.getSecondSummit()); // Liste les successeurs du sommet
+            }
+            for (SUMMIT s : uncheckSummits){
+                for (BRIDGE b : bridges){
+                    if (b.getFirstSummit()==origin && b.getSecondSummit()==s){
+                        if (distances.get(s.getKey()) > distances.get(origin.getKey())+b.getWeight() ){
+                            distances.set(s.getKey(), distances.get(origin.getKey())+b.getWeight());
+                            pred.set(s.getKey(),origin.getKey());
+                        }
+                    }
+                }
+
+            }
+            checkedSummits.add(origin);
+            int mini=1;
+            for (SUMMIT s : summits){
+                if (!checkedSummits.contains(s)) mini=s.getKey();
+            }
+            for (int i=2; i<distances.size()-1;i++){
+                if(distances.get(mini)>distances.get(i) && !checkedSummits.contains(summits.get(i-1))){
+                    mini=i;
+                }
+
+            }
+            origin=summits.get(mini-1);
+        }
 
 
-        SUMMIT departure = this.getSpecificSummits(origin.getKey());
-
-        this.uncheckSummits.add(departure);
+        /*this.uncheckSummits.add(departure);
         while (this.uncheckSummits.size() > 0){
             SUMMIT summit = this.getMinimum();
             this.checkedSummits.add(summit);
             this.uncheckSummits.remove(summit);
             minimalDistances(summit);
-        }
+        }*/
+
 
         //retour duchemin le plus court en graph
-        List<SUMMIT> newSummits = summits;
+        /*List<SUMMIT> newSummits = summits;
         List<BRIDGE> newBriges = new ArrayList<>();
         for(SUMMIT s: summits) {
             if(s!=path.get(s))
                 newBriges.add( new BRIDGE( s,path.get(s),( distances.get( path.get(s).getKey())-(distances.get(s.getKey())))));
         }
-        return new GRAPH(newSummits, this.oriented, newBriges, true);
+        */
+        List<BRIDGE> newBridges = new ArrayList<>();
+        for (int i=2; i< pred.size()-1;i++){
+            BRIDGE b = new BRIDGE(summits.get(pred.get(i)-1), summits.get(i-1),(distances.get(i)-distances.get(pred.get(i))));
+            newBridges.add(b);
+        }
+        System.out.println(newBridges.toString());
+        return new GRAPH(summits, this.oriented, newBridges, this.valued);
     }
 
     private void minimalDistances(SUMMIT summit) {
@@ -513,7 +547,7 @@ public class GRAPH  {
 
             if (getShortestPath(targetSummit) > getShortestPath(summit) + target.getWeight()) {
                 this.distances.set(targetSummit.getKey(), getShortestPath(summit) + target.getWeight());
-                this.path.put(summit, targetSummit);
+                this.pred.set(summit.getKey(), targetSummit.getKey());
                 if(!checkedSummits.contains(targetSummit))
                     this.uncheckSummits.add(targetSummit);
             }

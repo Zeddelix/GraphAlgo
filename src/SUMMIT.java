@@ -32,7 +32,14 @@ public class SUMMIT {
     //OUTPUT
     @Override
     public String toString() {
-        return String.valueOf(key);
+        String s="(";
+        if (info ==null) s+=String.valueOf(key);
+        else s+= info.toString();
+        s+=")";
+        return s;
     }
+
+
+
 
 }
