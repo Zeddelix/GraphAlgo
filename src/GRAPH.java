@@ -19,34 +19,41 @@ public class GRAPH  {
         int Nb = summits.size();
         int fsSize = 0;
         int count = 1;
-    	boolean[][] adj = new boolean[Nb][Nb];
+    	boolean[][] adj = new boolean[Nb+1][Nb+1];
     	for (BRIDGE b : bridges ) {
-    			adj[b.getFirstSummit().getKey()-1][b.getSecondSummit().getKey()-1] = true;
+    			adj[b.getFirstSummit().getKey()][b.getSecondSummit().getKey()] = true;
+    			if (oriented==false) {
+    			    adj[b.getSecondSummit().getKey()][b.getFirstSummit().getKey()] = true;
+    			    fsSize++;
+                }
     			fsSize++;
     	}
+    	for (SUMMIT s : summits){
+    	    fsSize++;
+        }
 
-    	/*this.Adj=adj;
+    	this.Adj=adj;
     	
-    	int[] Aps = new int[Nb];
-    	int[] Fs = new int[fsSize];
+    	int[] Aps = new int[Nb+1];
+    	int[] Fs = new int[fsSize+1];
     	Aps[0]= Nb+1;
     	Fs[0] = fsSize+1;
-    	Fs[1]=1;
-    	
-    	for (int i=0; i<Nb; i++) {
-    		Fs[i]= count;
-    		for (int j=0; j<Nb; j++) {
-    			if (adj[i][j]==true) {
-    				Fs[count]=j;
-    				count++;
-    			}
-    			Fs[count]=0;
-    			count++;
-    		}
-    	}
+        Aps[1]=1;
+
+        for (int i=1; i< adj.length; i++){
+            Aps[i]=count;
+            for (int j=1; j<adj[i].length;j++){
+                if (adj[i][j]==true){
+                    Fs[count]=j;
+                    count++;
+                }
+            }
+            Fs[count]=0;
+            count++;
+        }
     	
     	this.Fs=Fs;
-    	this.Aps=Aps;*/
+    	this.Aps=Aps;
     }
     public GRAPH (List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) {
         this(summits, oriented, bridges, true);
@@ -75,15 +82,19 @@ public class GRAPH  {
     	
         List<SUMMIT> summits = new ArrayList<>();
         List<BRIDGE> bridges = new ArrayList<>();
-        for (int i = 0; i<adjacents.length; i++) { // Ajout des sommets dans la liste
+        for (int i = 1; i<adjacents.length; i++) { // Ajout des sommets dans la liste
         	SUMMIT s = new SUMMIT();
         	summits.add(s);
         }
-        for (int i = 0; i<adjacents.length; i++) { // Ajout des liens. Doit �tre s�par� puisqu'il nous faut d'abord la totalit� des sommets.
-        	for (int j=0 ; j<adjacents.length; j++) {
+        for (int i = 1; i<adjacents.length; i++) { // Ajout des liens. Doit �tre s�par� puisqu'il nous faut d'abord la totalit� des sommets.
+        	for (int j=1 ; j<adjacents.length; j++) {
         		if (adjacents[i][j]==true) {
-        			BRIDGE b = new BRIDGE(summits.get(i), summits.get(j));
+        			BRIDGE b = new BRIDGE(summits.get(j-1), summits.get(i-1));
         			bridges.add(b);
+        			if (oriented==false) {
+                        b = new BRIDGE(summits.get(i-1), summits.get(j-1));
+                        if (!bridges.contains(b)) bridges.add(b);
+                    }
         		}
         	}
         }
@@ -97,6 +108,7 @@ public class GRAPH  {
     public GRAPH (int[] Fs, boolean oriented, int[] Aps, boolean valued) {
     	this.Aps=Aps;
     	this.Fs=Fs;
+    	int count=1;
     	List<SUMMIT> summits = new ArrayList<>();
         List<BRIDGE> bridges = new ArrayList<>();
     	
@@ -107,9 +119,10 @@ public class GRAPH  {
     	
     	for (int i=1 ; i<Fs.length; i++) {
     			if (Fs[i]!=0) {
-    				BRIDGE b = new BRIDGE(summits.get(i), summits.get(Fs[i]) );
+    				BRIDGE b = new BRIDGE(summits.get(count-1), summits.get(Fs[i]-1) );
     				bridges.add(b);
     		}
+    			else count++;
     	}
     	this.summits=summits;
     	this.bridges=bridges;
