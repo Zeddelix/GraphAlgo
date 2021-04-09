@@ -21,11 +21,11 @@ public class GRAPH  {
         int count = 1;
     	boolean[][] adj = new boolean[Nb][Nb];
     	for (BRIDGE b : bridges ) {
-    			adj[b.getFirstSummit().getKey()][b.getSecondSummit().getKey()] = true;
+    			adj[b.getFirstSummit().getKey()-1][b.getSecondSummit().getKey()-1] = true;
     			fsSize++;
     	}
 
-    	this.Adj=adj;
+    	/*this.Adj=adj;
     	
     	int[] Aps = new int[Nb];
     	int[] Fs = new int[fsSize];
@@ -46,7 +46,7 @@ public class GRAPH  {
     	}
     	
     	this.Fs=Fs;
-    	this.Aps=Aps;
+    	this.Aps=Aps;*/
     }
     public GRAPH (List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) {
         this(summits, oriented, bridges, true);
