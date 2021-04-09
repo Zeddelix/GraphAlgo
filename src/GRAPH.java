@@ -231,7 +231,7 @@ public class GRAPH  {
         return true;
     }
 
-    private int prochainLien(int summit, List<Boolean>traite, List<Integer>NUM) {
+    private int nextBridge(int summit, List<Boolean>traite, List<Integer>NUM) {
         int i = 0;
         while(bridges.get(i).getFirstSummit().getKey() != summits.get(summit).getKey()) { ++i;}// On va jusqu'au bridges concernant le sommet traité
         while(bridges.get(i).getFirstSummit().getKey() == summits.get(summit).getKey() && traite.get(i) == true && NUM.get(bridges.get(i).getSecondSummit().getKey()) == 0) {
@@ -254,7 +254,15 @@ public class GRAPH  {
         return min;
     }
 
-    public void tarjan() {
+    private boolean inPrem(int summit, List<Integer> PREM) {
+        for(int i = 1; i < PREM.get(0)+1; ++i) {
+            if(PREM.get(i) == summit)
+                return true;
+        }
+        return false;
+    }
+
+    public GRAPH tarjan() {
         //Déclaration des variables utilisées
         List<Integer> NUM = new ArrayList<Integer>(), MU = new ArrayList<Integer>(), PREM = new ArrayList<Integer>(), PILCH = new ArrayList<Integer>(), CFC = new ArrayList<Integer>(), TARJ = new ArrayList<Integer>();
         List<Boolean> ENTARJ = new ArrayList<Boolean>(), traite = new ArrayList<Boolean>();
@@ -279,11 +287,11 @@ public class GRAPH  {
         }
 
 
-        //Boucle de traitement
+        //Boucle de traitement pour remplir les tableaux
         int sommet = summits.get(0).getKey(); //Sommet traité
         int lien, nouveauSommet = 0, groupe =0;
         while(!allBridgesProcessed(traite)) {
-            if ((lien = prochainLien(sommet, traite)) != -1) { //Si il y a 1 lien à traiter
+            if ((lien = nextBridge(sommet, traite)) != -1) { //Si il y a 1 lien à traiter
                 //MAJ des tableaux
                 NUM.set(sommet, ++nouveauSommet);
                 ENTARJ.set(sommet, true);
@@ -337,6 +345,47 @@ public class GRAPH  {
                 }
             }
         }
+
+        //Creation des nouveaux sommets
+        List<SUMMIT> newSummits = new ArrayList<SUMMIT>();
+        SUMMIT s;
+        for(int i = 1; i<=PREM.get(0)+1; ++i) {
+            sommet = PREM.get(i);
+            s = new SUMMIT(" "+Integer.toString(sommet)+" ");
+            newSummits.add(s);
+            int next = PILCH.get(sommet);
+            while(next != 0 && !inPrem(next, PREM)) {
+                newSummits.get(newSummits.size()-1).setInfo(newSummits.get(newSummits.size()-1).getInfo()+Integer.toString(next)+" ");
+                next = PILCH.get(next);
+            }
+        }
+
+        List<BRIDGE> newBridges = new ArrayList<BRIDGE>();
+        int s1, s2;
+        boolean exist;
+        for (BRIDGE b: bridges) {
+            s1=CFC.get(b.getFirstSummit().getKey());
+            s2=CFC.get(b.getSecondSummit().getKey());
+            if(s1 != s2) {
+                exist=false;
+                int i = 0;
+                while(i < newBridges.size()-1 & !exist) {
+                    if(newBridges.get(i).getFirstSummit().getKey()==s1 && newBridges.get(i).getSecondSummit().getKey()==s2)
+                        exist = true;
+                    else
+                        ++i;
+                }
+                if(!exist) {
+                    BRIDGE bridge = new BRIDGE(/*s1*/b.getFirstSummit(), /*s2*/b.getSecondSummit());
+                    newBridges.add(bridge);
+                }
+            }
+        }
+
+        //création du graph
+        GRAPH g = new GRAPH(newSummits, true, newBridges, false);
+
+        return g;
     }
 
     public void djikstra() {
