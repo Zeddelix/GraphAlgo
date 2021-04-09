@@ -53,7 +53,7 @@ public class BRIDGE {
     //OUTPUT
     @Override
     public String toString() {
-        return Integer.toString(weight);
+        return summit1+"---"+weight+"---"+summit2;
     }
 
     @Override
