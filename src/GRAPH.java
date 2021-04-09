@@ -291,7 +291,7 @@ public class GRAPH  {
         int sommet = summits.get(0).getKey(); //Sommet traité
         int lien, nouveauSommet = 0, groupe =0;
         while(!allBridgesProcessed(traite)) {
-            if ((lien = nextBridge(sommet, traite)) != -1) { //Si il y a 1 lien à traiter
+            if ((lien = nextBridge(sommet, traite, NUM)) != -1) { //Si il y a 1 lien à traiter
                 //MAJ des tableaux
                 NUM.set(sommet, ++nouveauSommet);
                 ENTARJ.set(sommet, true);
