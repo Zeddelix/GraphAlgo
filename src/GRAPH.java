@@ -451,12 +451,11 @@ public class GRAPH  {
     private ArrayList<SUMMIT> checkedSummits = new ArrayList<>();
 
     public GRAPH djikstra() {
-        return this.djikstra(this.getSpecificSummits(1));
+        return this.djikstra(this.getSpecificSummits(0));
     }
     public GRAPH djikstra(int summit) {
         return this.djikstra(this.getSpecificSummits(summit));
     }
-
     public GRAPH djikstra(SUMMIT origin) {
         for (BRIDGE bridge : this.bridges) {
             if (bridge.getWeight() < 0) {
