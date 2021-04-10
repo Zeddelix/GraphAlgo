@@ -578,6 +578,25 @@ public class GRAPH  {
         return this.distances.get(arrival.getKey());
     }
 
+    private void fusionner(int i,int j,int[] prem,int[]pilch,int[]cfc,int[] nbElem)
+    {
+        if (nbElem[i] < nbElem[j]) {
+            int aux = i;
+            i = j;
+            j = aux;
+        }
+        int s = prem[j];
+        cfc[s] = i;
+        while (pilch[s] != 0) {
+            s = pilch[s];
+            cfc[s] = i;
+        }
+        pilch[s] = prem[i];
+        prem[i] = prem[j];
+        nbElem[i] += nbElem[j];
+    }
+
+
     public void Kruskal(GRAPH reduit) {
 
         int n = summits.size();
@@ -598,17 +617,23 @@ public class GRAPH  {
         for(int i = 0; i < bridges.size()-1;i++) {
             for (int j = i + 1; j < bridges.size(); j++) {
                 if (bridges.get(j).getWeight() < bridges.get(i).getWeight() ||
-                        (bridges.get(j).getWeight() == bridges.get(j).getWeight() && bridges.get(j).getFirstSummit().getKey() < bridges.get(i).getSecondSummit().getKey()) ||
+                        (bridges.get(j).getWeight() == bridges.get(i).getWeight() && bridges.get(j).getFirstSummit().getKey() < bridges.get(i).getSecondSummit().getKey()) ||
                         (bridges.get(j).getWeight() == bridges.get(i).getWeight() && bridges.get(j).getSecondSummit().getKey() < bridges.get(i).getSecondSummit().getKey())) {
                     p = bridges.get(j).getWeight();
-                    bridges.get(j).setWeight(bridges.get(j).getWeight());
+                    SUMMIT s1 = bridges.get(j).getFirstSummit();
+                    SUMMIT s2 = bridges.get(j).getSecondSummit();
+                    bridges.get(j).setWeight(bridges.get(i).getWeight());
+                    bridges.get(j).setFirstSummit(bridges.get(i).getFirstSummit());
+                    bridges.get(j).setSecondSummit(bridges.get(i).getSecondSummit());
                     bridges.get(i).setWeight(p);
+                    bridges.get(i).setFirstSummit(s1);
+                    bridges.get(i).setSecondSummit(s2);
                 }
             }
         }
 
         //kruskal
-        reduit.bridges.clear();
+
         int x;
         int y;
         int i = 0, j =0;
@@ -619,21 +644,7 @@ public class GRAPH  {
             if (x != y) {
                 reduit.bridges.add(bridges.get(i));
                 j++;
-                /////////////// fusionner////////////////
-                if (nbElem[i] < nbElem[j]) {
-                    int aux = i;
-                    i = j;
-                    j = aux;
-                }
-                int s = prem[j];
-                cfc[s] = i;
-                while (pilch[s] != 0) {
-                    s = pilch[s];
-                    cfc[s] = i;
-                }
-                pilch[s] = prem[i];
-                prem[i] = prem[j];
-                nbElem[i] += nbElem[j];
+                fusionner(x,y,prem,pilch,cfc,nbElem);
             }
             i++;
         }

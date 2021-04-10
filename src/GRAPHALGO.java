@@ -51,8 +51,13 @@ public class GRAPHALGO {
         GRAPH g = new GRAPH(l1,true,bl1,true);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
 
         ////////Test/////////
-        GRAPH red = new GRAPH();
+        /*List<SUMMIT> lred = new ArrayList<>();
+        lred.add(s1);*/
+        List<BRIDGE> blred = new ArrayList<>();
+        GRAPH red = new GRAPH(l1,true,blred,true);
         g.Kruskal(red);
+        //System.out.println(g.toString()+"\n");
+        //g.Dantzig();
         System.out.println(g.toString()+"\n");
         System.out.println(red.toString()+"\n");
 
