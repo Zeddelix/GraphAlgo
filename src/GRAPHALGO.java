@@ -95,9 +95,18 @@ public class GRAPHALGO {
         APS[5]=12;
 
         GRAPH g = new GRAPH(Fs, true, APS, false);*/
+
+        System.out.println("\nGraph initial :");
         System.out.println(g.toString());
+
+
+        System.out.println("\nDjikstra :");
         g.djikstra(s1);
 
+/*
+        System.out.println("\nTarjan : :");
+        g.tarjan();
+*/
 
 
     }
