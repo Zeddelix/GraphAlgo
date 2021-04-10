@@ -50,6 +50,12 @@ public class GRAPHALGO {
         bl1.add(b12);
         GRAPH g = new GRAPH(l1,true,bl1,true);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
 
+        ////////Test/////////
+        GRAPH red = new GRAPH();
+        g.Kruskal(red);
+        System.out.println(g.toString()+"\n");
+        System.out.println(red.toString()+"\n");
+
 
         /*boolean[][] Adj = new boolean[6][6];
         for (int i=0; i<6;i++){
@@ -91,10 +97,9 @@ public class GRAPHALGO {
         APS[3]=9;
         APS[4]=11;
         APS[5]=12;
-        GRAPH g = new GRAPH(Fs, true, APS, false);*/
+        GRAPH g = new GRAPH(Fs, true, APS, false);
         System.out.println(g.toString());
-        g.djikstra(s1);
-
+        g.djikstra(s1);*/
 
 
     }
