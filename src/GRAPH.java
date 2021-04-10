@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class GRAPH  {
@@ -691,23 +692,23 @@ public class GRAPH  {
 
     }
     public ArrayList<Integer> toPruferCode(){
+
         ArrayList<Integer> prufer = new ArrayList<>();
-        for (int i = 0; i < this.summits.size()-1; ++i)
-            prufer.add(-1);
 
-        ArrayList<Integer> deleted = new ArrayList<>();
-
-        while (prufer.contains(-1)){
-            SUMMIT s = this.summits.get(this.smallestLeaf(deleted));
-            SUMMIT voisin = getNeighbour(s, deleted);
+        while (prufer.size()<summits.size()-2){
+            SUMMIT s = this.summits.get(this.smallestLeaf()-1);
+            SUMMIT voisin = getNeighbour(s);
             prufer.add(voisin.getKey());
+            bridges.removeIf(b -> b.contains(s));
+            //summits.remove(s);
+
         }
         return prufer;
     }
 
-    private SUMMIT getNeighbour(SUMMIT s, ArrayList<Integer> deleted){
+    private SUMMIT getNeighbour(SUMMIT s){
         for(BRIDGE bridge : this.bridges){
-            if(bridge.contains(s) && !deleted.contains(bridge.getFirstSummit().getKey()) && !deleted.contains(bridge.getSecondSummit().getKey())){
+            if(bridge.contains(s) ){
                 SUMMIT voisin;
                 if(bridge.getFirstSummit() == s)
                     voisin = bridge.getSecondSummit();
@@ -720,86 +721,86 @@ public class GRAPH  {
     }
 
     private boolean isLeaf(SUMMIT summit){
-        int i = 0;
+        int i=0;
         for (BRIDGE bridge : this.bridges) {
             if(bridge.contains(summit))
-                ++i;
+                i++;
         }
-        return i != 2;
+        return (i==1);
     }
 
-    public boolean isLeafWithDeleteSummit(ArrayList<Integer> deleted, SUMMIT summit){
+    /*public boolean isLeafWithDeleteSummit(ArrayList<Integer> deleted, SUMMIT summit){
         if(this.isLeaf(summit))
             return false;
 
         if(deleted.contains(summit))
             return false;
 
-        int i = 0;
         for (BRIDGE bridge : this.bridges) {
             if(bridge.contains(summit)) {
-                SUMMIT summit2;
-                if(bridge.getFirstSummit() == summit)
-                    summit2 = bridge.getSecondSummit();
-                else
-                    summit2 = bridge.getFirstSummit();
-                if(!deleted.contains(summit2))
-                    ++i;
+                if(bridge.getFirstSummit() == summit && deleted.contains(bridge.getSecondSummit()))
+                    return true;
             }
         }
-        return i != 2;
+        return false;
 
-    }
+    }*/
 
-    private int smallestLeaf(ArrayList<Integer> deleted){
+    private int smallestLeaf(){
         int min = Integer.MAX_VALUE;
         for (SUMMIT s : this.summits){
-            if(this.isLeaf(s) || this.isLeafWithDeleteSummit(deleted, s) ){
-
-                if(min > s.getKey() && !deleted.contains(s.getKey()))
+            if(this.isLeaf(s) ){
+                if(min > s.getKey())
                     min = s.getKey();
             }
         }
         return min;
     }
 
-
-    void decodagePrufer(int[] d_tableauPrufer)
-    {
-        int size = this.summits.size()+2;
-        ArrayList<Integer> aps = new ArrayList<>();
-        ArrayList<Integer> fs = new ArrayList<>();
-        for(int i = 0; i < size; ++i) {
-            aps.add(0);
-            fs.add(0);
+    public GRAPH decodagePrufer(ArrayList <Integer> d_tableauPrufer) {
+        ArrayList Summit = new ArrayList<Integer>();
+        ArrayList ListOfSummit = new ArrayList<SUMMIT>();
+        ArrayList Bridges = new ArrayList<BRIDGE>();
+        ArrayList SummitGraph = new ArrayList<SUMMIT>();
+        for (int i = 1; i < d_tableauPrufer.size() + 3; i++) {
+            SUMMIT s = new SUMMIT();
+            Summit.add(i);
+            ListOfSummit.add(s);
         }
+        int i = 0, j = 0;
 
-        ArrayList<Boolean> summitUnchecked = new ArrayList<>();
-        for (int i = 0; i < size; ++i)
-            summitUnchecked.add(true);
-
-
-
-        ArrayList<Integer> iteration = new ArrayList<>();
-        for (int i = 0; i < size; ++i)
-            iteration.add(0);
-
-        for(int i=1; i<=d_tableauPrufer[0]; i++)
-            iteration.set(d_tableauPrufer[i], iteration.get(d_tableauPrufer[0])+1);
-
-        for(int i=1; i<= d_tableauPrufer[0]; i++) {
-
-            for(int j=1; j<= size; j++) {
-                if((summitUnchecked.get(j)) && iteration.get(j)==0) {
-                    summitUnchecked.set(j, false);
-                    iteration.set(d_tableauPrufer[i], iteration.get(d_tableauPrufer[i]-1));
-                    fs.add(j, d_tableauPrufer[i]);
-
-                    break;
-                }
+        while (Summit.size() > 2) {
+            j=0;
+            while (i < d_tableauPrufer.size() && j < Summit.size() && Contain(d_tableauPrufer, (Integer) Summit.get(j)) ) {
+                j++;
             }
+            if (j < Summit.size()) {
+                if (!SummitGraph.contains(ListOfSummit.get(d_tableauPrufer.get(i)-1)))
+                    SummitGraph.add(ListOfSummit.get(d_tableauPrufer.get(i)-1));
+                if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(j)-1)))
+                    SummitGraph.add(ListOfSummit.get((int) Summit.get(j)-1));
+                Bridges.add(new BRIDGE((SUMMIT) ListOfSummit.get(d_tableauPrufer.get(i)-1), (SUMMIT) ListOfSummit.get((int) Summit.get(j)-1)));
+                d_tableauPrufer.remove(d_tableauPrufer.get(i));
+                Summit.remove(Summit.get(j));
 
+
+            } else i++;
         }
+        if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(0)-1)))
+            SummitGraph.add(ListOfSummit.get((int) Summit.get(0)-1));
+        if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(1)-1)))
+            SummitGraph.add(ListOfSummit.get((int) Summit.get(1)-1));
+        Bridges.add(new BRIDGE((SUMMIT) ListOfSummit.get((int) Summit.get(0)-1), (SUMMIT) ListOfSummit.get((int) Summit.get(1)-1)));
+        GRAPH g = new GRAPH(SummitGraph, false, Bridges, false);
+        return g;
+    }
+
+    public boolean Contain(ArrayList <Integer> A, int B){
+        boolean answer = false;
+        for(int i=0;i<A.size();i++){
+            if(A.get(i)==B) answer=true;
+        }
+        return answer;
     }
 
     //OUTPUT
