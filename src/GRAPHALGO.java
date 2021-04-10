@@ -113,9 +113,7 @@ public class GRAPHALGO {
 */
 
         System.out.println("\nTarjan : :");
-        g.pruferToGraph();
-
-
+        System.out.println(g.tarjan());
 
     }
 }
