@@ -757,46 +757,6 @@ public class GRAPH  {
         return min;
     }
 
-
-    /*public GRAPH decodagePrufer(ArrayList <Integer> d_tableauPrufer) {
-        ArrayList Summit = new ArrayList<Integer>();
-        ArrayList ListOfSummit = new ArrayList<SUMMIT>();
-        ArrayList Bridges = new ArrayList<BRIDGE>();
-        ArrayList SummitGraph = new ArrayList<SUMMIT>();
-        for(int i=0;i<d_tableauPrufer.size()+2;i++){
-            SUMMIT s = new SUMMIT();
-            Summit.add(i);
-            ListOfSummit.add(s);
-        }
-
-        while(!d_tableauPrufer.isEmpty()){
-            int i=0; // Prufer
-            int j=0; // Summit
-
-            while(j<Summit.size()-1 && d_tableauPrufer.contains(Summit.get(j)) ){
-                j++;
-            }
-            if (i!=d_tableauPrufer.size()){
-                if(!SummitGraph.contains(ListOfSummit.get((int)Summit.get(j)))) SummitGraph.add(ListOfSummit.get((int)Summit.get(j)));
-                if(!SummitGraph.contains(ListOfSummit.get(d_tableauPrufer.get(i)-1)))SummitGraph.add(ListOfSummit.get(d_tableauPrufer.get(i)-1));
-                Bridges.add(new BRIDGE((SUMMIT)ListOfSummit.get(d_tableauPrufer.get(i)-1),(SUMMIT)ListOfSummit.get((int)Summit.get(j))));
-                Summit.remove(j);
-                d_tableauPrufer.remove(i);
-                j=0;
-            }
-            if (j!=d_tableauPrufer.size()) j++;
-
-        }
-        for (int i=0;i<Summit.size();i++){
-            if(!SummitGraph.contains(Summit.get(i))) SummitGraph.add(Summit.get(i));
-        }
-        Bridges.add(new BRIDGE((SUMMIT)ListOfSummit.get((int)Summit.get(0)),(SUMMIT)ListOfSummit.get((int)Summit.get(1))));
-
-        GRAPH g = new GRAPH(SummitGraph,false,Bridges,false);
-        return g;
-
-    }*/
-
     public GRAPH decodagePrufer(ArrayList <Integer> d_tableauPrufer) {
         ArrayList Summit = new ArrayList<Integer>();
         ArrayList ListOfSummit = new ArrayList<SUMMIT>();
@@ -808,13 +768,10 @@ public class GRAPH  {
             ListOfSummit.add(s);
         }
         int i = 0, j = 0;
-        boolean pres=true;
+
         while (Summit.size() > 2) {
-            while (i < d_tableauPrufer.size() && j < Summit.size() && pres==true) {
-                pres=false;
-                for (int aux=0;i<Summit.size();aux++){
-                    if (d_tableauPrufer.get(i)==Summit.get(aux)) pres=true;
-                }
+            j=0;
+            while (i < d_tableauPrufer.size() && j < Summit.size() && Contain(d_tableauPrufer, (Integer) Summit.get(j)) ) {
                 j++;
             }
             if (j < Summit.size()) {
@@ -829,9 +786,21 @@ public class GRAPH  {
 
             } else i++;
         }
-        Bridges.add(new BRIDGE((SUMMIT) ListOfSummit.get((int) Summit.get(0)), (SUMMIT) ListOfSummit.get((int) Summit.get(1))));
+        if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(0)-1)))
+            SummitGraph.add(ListOfSummit.get((int) Summit.get(0)-1));
+        if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(1)-1)))
+            SummitGraph.add(ListOfSummit.get((int) Summit.get(1)-1));
+        Bridges.add(new BRIDGE((SUMMIT) ListOfSummit.get((int) Summit.get(0)-1), (SUMMIT) ListOfSummit.get((int) Summit.get(1)-1)));
         GRAPH g = new GRAPH(SummitGraph, false, Bridges, false);
         return g;
+    }
+
+    public boolean Contain(ArrayList <Integer> A, int B){
+        boolean answer = false;
+        for(int i=0;i<A.size();i++){
+            if(A.get(i)==B) answer=true;
+        }
+        return answer;
     }
 
     //OUTPUT
