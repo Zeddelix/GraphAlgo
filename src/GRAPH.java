@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -138,6 +142,67 @@ public class GRAPH  {
 
     public GRAPH (int[] Fs, int[] Aps) {
         this(Fs, true, Aps, true);
+    }
+
+    public GRAPH (String nomFichier){   //creation fichier
+        String chaine="";
+        String fichier =nomFichier+".txt";
+        System.out.println(fichier);
+        ArrayList<SUMMIT> summitstxt = new ArrayList<>();
+        ArrayList<BRIDGE> bridgestxt = new ArrayList<>();
+
+
+        //lecture du fichier texte
+        try{
+            InputStream ips=new FileInputStream(fichier);
+            InputStreamReader ipsr=new InputStreamReader(ips);
+            BufferedReader br=new BufferedReader(ipsr);
+            String line;
+            int ind1, ind2, ind3;
+            line=br.readLine();
+            int nombreSommet= Integer.parseInt(line);
+
+            line=br.readLine();
+            this.oriented=Boolean.parseBoolean(line); // Orienté ?
+            line=br.readLine();
+            this.valued=Boolean.parseBoolean(line); // valué ?
+
+
+            for (int i=0; i<nombreSommet; i++){
+                summitstxt.add(new SUMMIT());
+            }
+            this.summits=summitstxt;
+
+            while ((line=br.readLine())!=null){
+                chaine+=line;
+            }
+            System.out.println(chaine);
+            String[] arrOfStr = chaine.split(",");
+            if (this.valued==false){
+                for (int i=0; i<arrOfStr.length-1; i+=2){
+                    ind1 = Integer.parseInt(arrOfStr[i]);
+                    ind2 = Integer.parseInt(arrOfStr[i+1]);
+                    BRIDGE b = new BRIDGE(summits.get(ind1-1),summits.get(ind2-1));
+                    bridgestxt.add(b);
+                }
+            }
+            else{
+                for (int i=0; i<arrOfStr.length-2; i+=3){
+                    ind1 = Integer.parseInt(arrOfStr[i]);
+                    ind2 = Integer.parseInt(arrOfStr[i+1]);
+                    ind3 = Integer.parseInt(arrOfStr[i+2]);
+                    BRIDGE b = new BRIDGE(summits.get(ind1-1),summits.get(ind2-1),ind3);
+                    bridgestxt.add(b);
+                }
+            }
+            this.bridges=bridgestxt;
+            br.close();
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+
+
     }
 
 
@@ -818,7 +883,10 @@ public class GRAPH  {
 
     @Override
     public String toString() {
-        return "Summits:"+summits.toString()+"\nBridges:"+bridges.toString()+"\nOriented:"+oriented+"\nValued:"+valued;
+        if (this.bridges!=null && this.summits!=null) {
+            return "Summits:" + summits.toString() + "\nBridges:" + bridges.toString() + "\nOriented:" + oriented + "\nValued:" + valued;
+        }
+        else return "Mauvaise entrée";
     }
 }
 

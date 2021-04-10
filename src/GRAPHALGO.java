@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,7 @@ public class GRAPHALGO {
         APS[5]=12;
 
         GRAPH g = new GRAPH(Fs, true, APS, false);*/
-        ArrayList Test = new ArrayList<Integer>();
+        /*ArrayList Test = new ArrayList<Integer>();
         Test.add(2);
         Test.add(2);
         Test.add(2);
@@ -104,7 +105,10 @@ public class GRAPHALGO {
         GRAPH g = new GRAPH();
         //g.djikstra(s1);
         //System.out.println(g.toPruferCode());
-        g.decodagePrufer(Test).toString();
+        g.decodagePrufer(Test).toString();*/
+
+        GRAPH g = new GRAPH("FichierTexte");
+        System.out.println(g.toString());
 
 
 
