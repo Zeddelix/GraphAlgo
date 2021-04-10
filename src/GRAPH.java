@@ -720,12 +720,11 @@ public class GRAPH  {
     }
 
     private boolean isLeaf(SUMMIT summit){
-        int i = 0;
         for (BRIDGE bridge : this.bridges) {
-            if(bridge.contains(summit))
-                ++i;
+            if(bridge.getFirstSummit() == summit)
+                return false;
         }
-        return i != 2;
+        return true;
     }
 
     public boolean isLeafWithDeleteSummit(ArrayList<Integer> deleted, SUMMIT summit){
@@ -735,19 +734,13 @@ public class GRAPH  {
         if(deleted.contains(summit))
             return false;
 
-        int i = 0;
         for (BRIDGE bridge : this.bridges) {
             if(bridge.contains(summit)) {
-                SUMMIT summit2;
-                if(bridge.getFirstSummit() == summit)
-                    summit2 = bridge.getSecondSummit();
-                else
-                    summit2 = bridge.getFirstSummit();
-                if(!deleted.contains(summit2))
-                    ++i;
+                if(bridge.getFirstSummit() == summit && deleted.contains(bridge.getSecondSummit()))
+                    return true;
             }
         }
-        return i != 2;
+        return false;
 
     }
 
@@ -755,7 +748,6 @@ public class GRAPH  {
         int min = Integer.MAX_VALUE;
         for (SUMMIT s : this.summits){
             if(this.isLeaf(s) || this.isLeafWithDeleteSummit(deleted, s) ){
-
                 if(min > s.getKey() && !deleted.contains(s.getKey()))
                     min = s.getKey();
             }
