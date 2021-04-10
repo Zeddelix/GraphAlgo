@@ -11,20 +11,24 @@ public class GRAPHALGO {
         SUMMIT s5 = new SUMMIT ("5");
         SUMMIT s6 = new SUMMIT ("6");
         SUMMIT s7 = new SUMMIT ("7");
+        SUMMIT s8 = new SUMMIT ("8");
 
 
-        BRIDGE b1 = new BRIDGE(s1,s2,1);
-        BRIDGE b2 = new BRIDGE(s1,s5,2);
-        BRIDGE b3 = new BRIDGE(s2,s5,1);
-        BRIDGE b4 = new BRIDGE (s2,s6,4);
-        BRIDGE b5 = new BRIDGE (s6,s5,1);
-        BRIDGE b6 = new BRIDGE (s7,s6,1);
-        BRIDGE b7 = new BRIDGE (s5,s3,1);
-        BRIDGE b8 = new BRIDGE (s5,s4,6);
-        BRIDGE b9 = new BRIDGE (s5,s7,0);
-        BRIDGE b10 = new BRIDGE (s4,s7,4);
-        BRIDGE b11 = new BRIDGE (s3,s4,2);
-        BRIDGE b12 = new BRIDGE (s3,s1,0);
+        BRIDGE b1 = new BRIDGE(s1,s4);
+        BRIDGE b2 = new BRIDGE(s4,s1);
+        BRIDGE b3 = new BRIDGE(s4,s7);
+        BRIDGE b4 = new BRIDGE (s4,s8);
+        BRIDGE b5 = new BRIDGE (s8,s7);
+        BRIDGE b6 = new BRIDGE (s7,s1);
+        BRIDGE b7 = new BRIDGE (s8,s1);
+        BRIDGE b8 = new BRIDGE (s2,s1);
+        BRIDGE b9 = new BRIDGE (s2,s5);
+        BRIDGE b10 = new BRIDGE (s5,s8);
+        BRIDGE b11 = new BRIDGE (s3,s2);
+        BRIDGE b12 = new BRIDGE (s3,s6);
+        BRIDGE b13 = new BRIDGE (s6,s2);
+        BRIDGE b14 = new BRIDGE (s6,s5);
+        BRIDGE b15 = new BRIDGE (s6,s8);
 
 
         List<SUMMIT> l1 = new ArrayList<>() ;
@@ -36,6 +40,7 @@ public class GRAPHALGO {
         l1.add(s5);
         l1.add(s6);
         l1.add(s7);
+        l1.add(s8);
         bl1.add(b1);
         bl1.add(b2);
         bl1.add(b3);
@@ -48,7 +53,10 @@ public class GRAPHALGO {
         bl1.add(b10);
         bl1.add(b11);
         bl1.add(b12);
-        GRAPH g = new GRAPH(l1,true,bl1,true);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
+        bl1.add(b13);
+        bl1.add(b14);
+        bl1.add(b15);
+        GRAPH g = new GRAPH(l1,true,bl1,false);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
 
 
         /*boolean[][] Adj = new boolean[6][6];
@@ -99,14 +107,14 @@ public class GRAPHALGO {
         System.out.println("\nGraph initial :");
         System.out.println(g.toString());
 
-
+/*
         System.out.println("\nDjikstra :");
         g.djikstra(s1);
-
-/*
-        System.out.println("\nTarjan : :");
-        g.tarjan();
 */
+
+        System.out.println("\nTarjan : :");
+        g.pruferToGraph();
+
 
 
     }

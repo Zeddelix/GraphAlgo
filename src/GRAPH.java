@@ -285,25 +285,31 @@ public class GRAPH  {
     }
 
     private int nextBridge(int summit, List<Boolean>traite, List<Integer>NUM) {
-        int i = 0;
-        while(bridges.get(i).getFirstSummit().getKey() != summit && i < bridges.size()-1) { ++i;}// On va jusqu'au bridges concernant le sommet traité
-        while(bridges.get(i).getFirstSummit().getKey() == summit && traite.get(i) == true && NUM.get(bridges.get(i).getSecondSummit().getKey()) == -1) {
-            ++i;
+        int secondSummit= Integer.MAX_VALUE;
+        for (int i=0; i<bridges.size()-1; i++){ // On va jusqu'au bridges concernant le sommet traité
+                    if ((bridges.get(i).getFirstSummit().getKey()==summit) && traite.get(i)==false){
+                        if (bridges.get(i).getSecondSummit().getKey()<secondSummit && NUM.get(bridges.get(i).getSecondSummit().getKey())==-1 ){
+                            secondSummit=i;
+                        }
+
+                    }
         }
 
-        if(bridges.get(i).getFirstSummit().getKey() == summit)//On est sorti de la boucle en trouvant un lien non traité
-            return i;
+        if (secondSummit!= Integer.MAX_VALUE) return secondSummit;
         return -1; //On est à la fin des liens du sommet sans en trouvé un non traité
     }
 
     private int minFrondeLTFC(int summit, List<Integer>NUM) {
-        int min = Integer.MIN_VALUE, i = 0;
-        while(i< bridges.size() && bridges.get(i).getFirstSummit().getKey() != summits.get(summit).getKey()) { ++i;}// On va jusqu'au bridges concernant le sommet traité
-        while(i< bridges.size() && bridges.get(i).getFirstSummit().getKey() == summits.get(summit).getKey() && bridges.get(i).getSecondSummit().getKey() < summit && NUM.get(bridges.get(i).getSecondSummit().getKey()) != -1) {
-            if(min > NUM.get(bridges.get(i).getSecondSummit().getKey())) {
-                min = NUM.get(bridges.get(i).getSecondSummit().getKey());
+        int min = Integer.MAX_VALUE;
+        int minimum = Integer.MAX_VALUE;
+        for (int i=0; i<bridges.size()-1; i++){
+            if ((bridges.get(i).getFirstSummit().getKey()==summit) && (TARJ.contains(bridges.get(i).getSecondSummit().getKey()) || bridges.get(i).getSecondSummit().getKey()<summit) && NUM.get(bridges.get(i).getSecondSummit().getKey())!=-1  ){
+                if (min > NUM.get(bridges.get(i).getSecondSummit().getKey())) min = NUM.get(bridges.get(i).getSecondSummit().getKey());
             }
+
         }
+
+
         return min;
     }
 
@@ -317,7 +323,7 @@ public class GRAPH  {
 
     private int prochainSommet(List<Integer> NUM) {
         for(int i = 0; i<NUM.size(); ++i) {
-            if(NUM.get(i) == 0)
+            if(NUM.get(i) == -1)
                 return i;
         }
         return -1;
@@ -356,19 +362,23 @@ public class GRAPH  {
         int sommet = summits.get(0).getKey(); //Sommet traité
         int lien, nouveauSommet = 0, groupe =0;
         while(!allBridgesProcessed(traite) && sommet!=-1) {
-            if ((lien = nextBridge(sommet, traite, NUM)) != -1 && NUM.get(bridges.get(lien).getSecondSummit().getKey())==-1) { //Si il y a 1 lien à traiter
+            lien = nextBridge(sommet, traite, NUM);
+            if (lien != -1 && NUM.get(bridges.get(lien).getSecondSummit().getKey())==-1) { //Si il y a 1 lien à traiter
                 if(NUM.get(bridges.get(lien).getSecondSummit().getKey())!=-1) {
                     //Marqué le lien comme traité
                     traite.set(lien, true);//c'est une fronde, un LTFC ou un LTFNC
                 }else {
-                    //MAJ des tableaux
-                    NUM.set(sommet, ++nouveauSommet);
-                    ENTARJ.set(sommet, true);
-                    TARJ.add(sommet);
-                    if (TARJ.size() > 1)
-                        PILCH.set(sommet, TARJ.get(TARJ.size() - 2));
-                    else
-                        PILCH.set(sommet, 0);
+
+                    if (!TARJ.contains(sommet)){
+                        NUM.set(sommet, ++nouveauSommet);
+                        ENTARJ.set(sommet, true);
+                        TARJ.add(sommet);
+                        if (TARJ.size() > 1)
+                            PILCH.set(sommet, TARJ.get(TARJ.size() - 2));
+                        else
+                            PILCH.set(sommet, 0);
+                    }
+
 
                     //Marqué le lien comme traité
                     traite.set(lien, true);
@@ -378,20 +388,33 @@ public class GRAPH  {
                     System.out.println("passage sur le sommet suivant(if) :" + sommet);
                 }
             }else{
-                int numSommet = NUM.get(sommet);
-                //Recherche du plus petit mu des sucesseurs direct
-                int pps = Integer.MAX_VALUE;
-                for(BRIDGE b:bridges) {
-                    //System.out.println(MU.size());
-                    //System.out.println(b.getSecondSummit().getKey());
-                    if(b.getFirstSummit().getKey() == sommet && pps>MU.get(b.getSecondSummit().getKey())) {
-                        pps = MU.get(b.getSecondSummit().getKey());
-                    }
-                }
-                int minFLTFC = minFrondeLTFC(sommet, NUM);
 
-                //Calcul de MU
-                MU.set(sommet,Math.min(Math.min(/*nouvelle numérotation du sommet*/numSommet, /*MU des sucesseurs */pps), /*fronde&LTFC*/minFLTFC));
+                if (!TARJ.contains(sommet)){
+                    NUM.set(sommet, ++nouveauSommet);
+                    ENTARJ.set(sommet, true);
+                    TARJ.add(sommet);
+                    if (TARJ.size() > 1)
+                        PILCH.set(sommet, TARJ.get(TARJ.size() - 2));
+                    else
+                        PILCH.set(sommet, 0);
+                }
+                if(MU.get(sommet)== Integer.MAX_VALUE){
+                    int numSommet = NUM.get(sommet);
+                    //Recherche du plus petit mu des sucesseurs direct
+                    int pps = Integer.MAX_VALUE;
+                    for(BRIDGE b:bridges) {
+                        //System.out.println(MU.size());
+                        //System.out.println(b.getSecondSummit().getKey());
+                        if(b.getFirstSummit().getKey() == sommet && TARJ.contains(b.getSecondSummit().getKey()) && pps>MU.get(b.getSecondSummit().getKey())) {
+                            pps = MU.get(b.getSecondSummit().getKey());
+                        }
+                    }
+                    int minFLTFC = minFrondeLTFC(sommet, NUM);
+
+                    //Calcul de MU
+                    MU.set(sommet,Math.min(Math.min(/*nouvelle numérotation du sommet*/numSommet, /*MU des sucesseurs */pps), /*fronde&LTFC*/minFLTFC));
+
+                }
 
                 if(MU.get(sommet) == NUM.get(sommet)) {
                     //Remplir PREM & CFC, Update TARJ & ENTARJ
@@ -399,6 +422,7 @@ public class GRAPH  {
                     PREM.set(0,PREM.get(0)+1);
                     ++groupe;
                     for(int i = TARJ.size()-1; i>= 0; --i) {
+
                         if(MU.get(TARJ.get(i)) != Integer.MAX_VALUE) {
                             CFC.set(TARJ.get(i), groupe);
                             ENTARJ.set(TARJ.get(i), false);
@@ -412,12 +436,16 @@ public class GRAPH  {
                     //revenir sur le sommet précédent
                     int i = TARJ.size()-1;
                     System.out.println("Nombre d'élément dans TARJ :" +i+" sommet traité :"+sommet);
-                    if(i != 0) {
+                    if(i > 0) {
                         while (TARJ.get(i) != sommet) {
                             --i;
                         }
-                        sommet = TARJ.get(i - 1);
-                        System.out.println("Retour sur le sommet précédent :" +sommet);
+                        if (i > 0) {
+                            sommet = TARJ.get(i - 1);
+                            System.out.println("Retour sur le sommet précédent :" +sommet);
+                        }
+
+
                     }
                 }
             }
