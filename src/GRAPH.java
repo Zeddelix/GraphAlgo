@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class GRAPH  {
@@ -691,23 +692,23 @@ public class GRAPH  {
 
     }
     public ArrayList<Integer> toPruferCode(){
+
         ArrayList<Integer> prufer = new ArrayList<>();
-        for (int i = 0; i < this.summits.size()-1; ++i)
-            prufer.add(-1);
 
-        ArrayList<Integer> deleted = new ArrayList<>();
-
-        while (prufer.contains(-1)){
-            SUMMIT s = this.summits.get(this.smallestLeaf(deleted));
-            SUMMIT voisin = getNeighbour(s, deleted);
+        while (prufer.size()<summits.size()-2){
+            SUMMIT s = this.summits.get(this.smallestLeaf()-1);
+            SUMMIT voisin = getNeighbour(s);
             prufer.add(voisin.getKey());
+            bridges.removeIf(b -> b.contains(s));
+            //summits.remove(s);
+
         }
         return prufer;
     }
 
-    private SUMMIT getNeighbour(SUMMIT s, ArrayList<Integer> deleted){
+    private SUMMIT getNeighbour(SUMMIT s){
         for(BRIDGE bridge : this.bridges){
-            if(bridge.contains(s) && !deleted.contains(bridge.getFirstSummit().getKey()) && !deleted.contains(bridge.getSecondSummit().getKey())){
+            if(bridge.contains(s) ){
                 SUMMIT voisin;
                 if(bridge.getFirstSummit() == s)
                     voisin = bridge.getSecondSummit();
@@ -720,14 +721,15 @@ public class GRAPH  {
     }
 
     private boolean isLeaf(SUMMIT summit){
+        int i=0;
         for (BRIDGE bridge : this.bridges) {
-            if(bridge.getFirstSummit() == summit)
-                return false;
+            if(bridge.contains(summit))
+                i++;
         }
-        return true;
+        return (i==1);
     }
 
-    public boolean isLeafWithDeleteSummit(ArrayList<Integer> deleted, SUMMIT summit){
+    /*public boolean isLeafWithDeleteSummit(ArrayList<Integer> deleted, SUMMIT summit){
         if(this.isLeaf(summit))
             return false;
 
@@ -742,13 +744,13 @@ public class GRAPH  {
         }
         return false;
 
-    }
+    }*/
 
-    private int smallestLeaf(ArrayList<Integer> deleted){
+    private int smallestLeaf(){
         int min = Integer.MAX_VALUE;
         for (SUMMIT s : this.summits){
-            if(this.isLeaf(s) || this.isLeafWithDeleteSummit(deleted, s) ){
-                if(min > s.getKey() && !deleted.contains(s.getKey()))
+            if(this.isLeaf(s) ){
+                if(min > s.getKey())
                     min = s.getKey();
             }
         }
@@ -756,42 +758,43 @@ public class GRAPH  {
     }
 
 
-    void decodagePrufer(int[] d_tableauPrufer)
-    {
-        int size = this.summits.size()+2;
-        ArrayList<Integer> aps = new ArrayList<>();
-        ArrayList<Integer> fs = new ArrayList<>();
-        for(int i = 0; i < size; ++i) {
-            aps.add(0);
-            fs.add(0);
+    public GRAPH decodagePrufer(ArrayList <Integer> d_tableauPrufer) {
+        ArrayList Summit = new ArrayList<Integer>();
+        ArrayList ListOfSummit = new ArrayList<SUMMIT>();
+        ArrayList Bridges = new ArrayList<BRIDGE>();
+        ArrayList SummitGraph = new ArrayList<SUMMIT>();
+        for(int i=0;i<d_tableauPrufer.size()+2;i++){
+            SUMMIT s = new SUMMIT();
+            Summit.add(i);
+            ListOfSummit.add(s);
         }
 
-        ArrayList<Boolean> summitUnchecked = new ArrayList<>();
-        for (int i = 0; i < size; ++i)
-            summitUnchecked.add(true);
+        while(!d_tableauPrufer.isEmpty()){
+            int i=0; // Prufer
+            int j=0; // Summit
 
-
-
-        ArrayList<Integer> iteration = new ArrayList<>();
-        for (int i = 0; i < size; ++i)
-            iteration.add(0);
-
-        for(int i=1; i<=d_tableauPrufer[0]; i++)
-            iteration.set(d_tableauPrufer[i], iteration.get(d_tableauPrufer[0])+1);
-
-        for(int i=1; i<= d_tableauPrufer[0]; i++) {
-
-            for(int j=1; j<= size; j++) {
-                if((summitUnchecked.get(j)) && iteration.get(j)==0) {
-                    summitUnchecked.set(j, false);
-                    iteration.set(d_tableauPrufer[i], iteration.get(d_tableauPrufer[i]-1));
-                    fs.add(j, d_tableauPrufer[i]);
-
-                    break;
-                }
+            while(j<Summit.size()-1 && d_tableauPrufer.contains(Summit.get(j)) ){
+                j++;
             }
+            if (i!=d_tableauPrufer.size()){
+                if(!SummitGraph.contains(ListOfSummit.get((int)Summit.get(j)))) SummitGraph.add(ListOfSummit.get((int)Summit.get(j)));
+                if(!SummitGraph.contains(ListOfSummit.get(d_tableauPrufer.get(i)-1)))SummitGraph.add(ListOfSummit.get(d_tableauPrufer.get(i)-1));
+                Bridges.add(new BRIDGE((SUMMIT)ListOfSummit.get(d_tableauPrufer.get(i)-1),(SUMMIT)ListOfSummit.get((int)Summit.get(j))));
+                Summit.remove(j);
+                d_tableauPrufer.remove(i);
+                j=0;
+            }
+            if (j!=d_tableauPrufer.size()) j++;
 
         }
+        for (int i=0;i<Summit.size();i++){
+            if(!SummitGraph.contains(Summit.get(i))) SummitGraph.add(Summit.get(i));
+        }
+        Bridges.add(new BRIDGE((SUMMIT)ListOfSummit.get((int)Summit.get(0)),(SUMMIT)ListOfSummit.get((int)Summit.get(1))));
+
+        GRAPH g = new GRAPH(SummitGraph,false,Bridges,false);
+        return g;
+
     }
 
     //OUTPUT
