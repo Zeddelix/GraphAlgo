@@ -50,17 +50,20 @@ public class GRAPHALGO {
         bl1.add(b12);
         GRAPH g = new GRAPH(l1,true,bl1,true);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
 
-        ////////Test/////////
+        ////////Test KIKI/////////
         /*List<SUMMIT> lred = new ArrayList<>();
         lred.add(s1);*/
-        List<BRIDGE> blred = new ArrayList<>();
-        GRAPH red = new GRAPH(l1,true,blred,true);
-        g.Kruskal(red);
+        //List<BRIDGE> blred = new ArrayList<>();
+        //GRAPH red = new GRAPH(l1,true,blred,true);
+        //g.Kruskal(red);
         //System.out.println(g.toString()+"\n");
         //g.Dantzig();
-        System.out.println(g.toString()+"\n");
-        System.out.println(red.toString()+"\n");
+        //System.out.println(g.toString()+"\n");
+        //System.out.println(red.toString()+"\n");
+        int[][] test = g.matDist();
 
+        
+        ///////////////////////////
 
         /*boolean[][] Adj = new boolean[6][6];
         for (int i=0; i<6;i++){

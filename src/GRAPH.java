@@ -51,6 +51,7 @@ public class GRAPH  {
 
         this.Fs=Fs;
         this.Aps=Aps;
+
     }
     public GRAPH (List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) {
         this(summits, oriented, bridges, true);
@@ -259,12 +260,53 @@ public class GRAPH  {
     }
 
     //METHODS
-    public int distance(SUMMIT s1) {
-        return 0;
+
+    public int[] Distance(int r){
+        int nb_som = summits.size();
+        int i =0, j = 1,k=0,ifin,s,t,it;
+        int[] fil = new int[nb_som+1];
+        fil[0] = nb_som;
+        int[] dist = new int[nb_som+1];
+        dist[0] = nb_som;
+        fil[1] = r;
+        for (int h =1; h <= nb_som;h++){
+            dist[h] = -1;
+        }
+
+        dist[r] = 0;
+
+        while(i < j){
+            k++;
+            ifin = j;
+            while(i < ifin){
+                i++;
+                s = fil[i];
+                it = Aps[s];
+                t = Fs[it];
+                while(t > 0){
+                    if(dist[t] == -1){
+                        j++;
+                        fil[j]=t;
+                        dist[t] = k;
+                    }
+                    t = Fs[++it];
+                }
+            }
+        }
+        return dist;
     }
 
-    public int[][]matDist(){
-        return null;
+    public int[][] matDist()
+    {
+        int n = summits.size();
+        int[][]res = new int[n][n];
+
+        for(int i = 0; i < n;i++)
+        {
+            res[i]  = Distance(summits.get(i).getKey());
+        }
+
+        return res;
     }
 
     public int[] ListSummitRank(){
