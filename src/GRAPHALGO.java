@@ -1,30 +1,29 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GRAPHALGO {
 
     public static void main(String args[]) {
-        SUMMIT s1 = new SUMMIT("1");
+        /*SUMMIT s1 = new SUMMIT("1");
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
         SUMMIT s4 = new SUMMIT ("4");
         SUMMIT s5 = new SUMMIT ("5");
         SUMMIT s6 = new SUMMIT ("6");
         SUMMIT s7 = new SUMMIT ("7");
+        SUMMIT s8 = new SUMMIT ("8");
+        SUMMIT s9 = new SUMMIT ("9");
 
 
-        BRIDGE b1 = new BRIDGE(s1,s2,1);
-        BRIDGE b2 = new BRIDGE(s1,s5,2);
-        BRIDGE b3 = new BRIDGE(s2,s5,1);
-        BRIDGE b4 = new BRIDGE (s2,s6,4);
-        BRIDGE b5 = new BRIDGE (s6,s5,1);
-        BRIDGE b6 = new BRIDGE (s7,s6,1);
-        BRIDGE b7 = new BRIDGE (s5,s3,1);
-        BRIDGE b8 = new BRIDGE (s5,s4,6);
-        BRIDGE b9 = new BRIDGE (s5,s7,0);
-        BRIDGE b10 = new BRIDGE (s4,s7,4);
-        BRIDGE b11 = new BRIDGE (s3,s4,2);
-        BRIDGE b12 = new BRIDGE (s3,s1,0);
+        BRIDGE b1 = new BRIDGE(s1,s2);
+        BRIDGE b2 = new BRIDGE(s2,s3);
+        BRIDGE b3 = new BRIDGE(s2,s4);
+        BRIDGE b4 = new BRIDGE (s2,s5);
+        BRIDGE b5 = new BRIDGE (s5,s6);
+        BRIDGE b6 = new BRIDGE (s5,s7);
+        BRIDGE b7 = new BRIDGE (s6,s8);
+        BRIDGE b8 = new BRIDGE (s7,s9);
 
 
         List<SUMMIT> l1 = new ArrayList<>() ;
@@ -36,6 +35,8 @@ public class GRAPHALGO {
         l1.add(s5);
         l1.add(s6);
         l1.add(s7);
+        l1.add(s8);
+        l1.add(s9);
         bl1.add(b1);
         bl1.add(b2);
         bl1.add(b3);
@@ -43,12 +44,9 @@ public class GRAPHALGO {
         bl1.add(b5);
         bl1.add(b6);
         bl1.add(b7);
-        bl1.add(b8);
-        bl1.add(b9);
-        bl1.add(b10);
-        bl1.add(b11);
-        bl1.add(b12);
-        GRAPH g = new GRAPH(l1,true,bl1,true);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
+        bl1.add(b8);*/
+
+        //GRAPH g = new GRAPH(l1,false,bl1,false);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
 
 
         /*boolean[][] Adj = new boolean[6][6];
@@ -95,8 +93,18 @@ public class GRAPHALGO {
         APS[5]=12;
 
         GRAPH g = new GRAPH(Fs, true, APS, false);*/
-        System.out.println(g.toString());
-        g.djikstra(s1);
+        ArrayList Test = new ArrayList<Integer>();
+        Test.add(2);
+        Test.add(2);
+        Test.add(2);
+        Test.add(5);
+        Test.add(6);
+        Test.add(5);
+        Test.add(7);
+        GRAPH g = new GRAPH();
+        //g.djikstra(s1);
+        //System.out.println(g.toPruferCode());
+        g.decodagePrufer(Test).toString();
 
 
 
