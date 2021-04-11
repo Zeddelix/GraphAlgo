@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bea80e4d-5182-4573-88b8-ef1d07b5f3e6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPH.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPH.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPHALGO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPHALGO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GRAPH.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GRAPH.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GRAPHALGO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GRAPHALGO.java" afterDir="false" />
     </list>
@@ -66,7 +68,8 @@
       <updated>1616074793074</updated>
       <workItem from="1616074794713" duration="140000" />
       <workItem from="1618000409540" duration="178000" />
-      <workItem from="1618056863563" duration="5041000" />
+      <workItem from="1618056863563" duration="8907000" />
+      <workItem from="1618143951548" duration="593000" />
     </task>
     <servers />
   </component>

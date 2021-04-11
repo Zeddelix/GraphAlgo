@@ -695,11 +695,16 @@ public class GRAPH  {
 
     public int[][] Dantzig() {
 
+        /*LIEN
+
+            https://www.cours-et-exercices.com/2016/12/chemins-optimaux-dans-graphes.html
+         */
+
         int [][] gr = matDist();
         int n = summits.size();
         int[][] mat = new int[n][n];
-        for (int i = 1;i <= n ;i++) {
-            for (int j = 1; i <= n; i++) {
+        for (int i = 1;i < n ;i++) {
+            for (int j = 1; i < n; i++) {
                 if (i == j) {
                     mat[i][i] = 0;
                 } else {
@@ -707,7 +712,7 @@ public class GRAPH  {
                 }
             }
         }
-        for(int k = 1 ; k <= n;k++) {
+        for(int k = 1 ; k < n;k++) {
             for (int i = 1; i < k; i++) {
                 int min1 = 0, min2 = 0;
                 for (int j = k; j >= 1; j--) {

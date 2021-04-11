@@ -60,9 +60,18 @@ public class GRAPHALGO {
         //g.Dantzig();
         //System.out.println(g.toString()+"\n");
         //System.out.println(red.toString()+"\n");
-        int[][] test = g.matDist();
+        //int[][] test = g.matDist();
 
-        
+        int[][] test = g.Dantzig();
+
+        for (int i = 0; i< test.length;i++){
+            for (int j = 0; j< test[i].length;j++){
+                System.out.print(test[i][j]+" ");
+            }
+
+            System.out.print("\n");
+        }
+
         ///////////////////////////
 
         /*boolean[][] Adj = new boolean[6][6];
