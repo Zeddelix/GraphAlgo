@@ -1,11 +1,12 @@
 import java.awt.*;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GRAPHALGO {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         /*SUMMIT s1 = new SUMMIT("1");
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
@@ -107,8 +108,9 @@ public class GRAPHALGO {
         //System.out.println(g.toPruferCode());
         g.decodagePrufer(Test).toString();*/
 
-        GRAPH g = new GRAPH("FichierTexte");
+        GRAPH g = new GRAPH("entreeAuClavier");
         System.out.println(g.toString());
+        g.sortieFichier("sortieGraph");
 
 
 
