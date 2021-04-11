@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -175,6 +172,7 @@ public class GRAPH  {
 
             while ((line=br.readLine())!=null){
                 chaine+=line;
+                chaine+=",";
             }
             System.out.println(chaine);
             String[] arrOfStr = chaine.split(",");
@@ -197,6 +195,30 @@ public class GRAPH  {
             }
             this.bridges=bridgestxt;
             br.close();
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+
+
+    }
+
+    public void sortieFichier(String nomFichier) throws IOException {   //creation fichier pour sortie
+
+        try{
+            String chaine="";
+            File file =new File(nomFichier+".txt");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            chaine+="Valué : "+this.valued+"\n";
+            chaine+="Orienté :" +this.oriented+"\n";
+            chaine+="Liste de sommets : "+this.summits.toString()+"\n";
+            chaine+="Liste des liens :" + this.bridges+"\n";
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(chaine);
+            bw.close();
         }
         catch (Exception e){
             System.out.println(e.toString());
@@ -275,6 +297,10 @@ public class GRAPH  {
 
     public int numberOfSummit() {
         return summits.size();
+    }
+
+    public int numberOfBridges(){
+        return this.bridges.size();
     }
 
     public boolean isOriented() {
