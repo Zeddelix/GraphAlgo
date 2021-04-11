@@ -864,6 +864,37 @@ public class GRAPH  {
 
     }
 
+    //Onglet d'explication
+    public void help() {
+        String input;
+        System.out.println("User Manual :\n");
+        System.out.println("Addition & Removal: ");
+        System.out.println("\t1-addBridge");
+        System.out.println("\t2-addSummit");
+        System.out.println("\t3-removeBridge");
+        System.out.println("\t4-removeSummit");
+        System.out.println("Getters :");
+        System.out.println("\t5-getBridges");
+        System.out.println("\t6-getSummits");
+        System.out.println("\t7-isOriented");
+        System.out.println("\t8-isValued");
+        System.out.println("\t9-getFs");
+        System.out.println("\t10-getAps");
+        System.out.println("\t11-getAdjacent");
+        System.out.println("Methods : ");
+        System.out.println("\t12-distanceArray");
+        System.out.println("\t13-ListSummitRank");
+        System.out.println("\t14-djikstra");
+        System.out.println("\t15-Kruskal");
+        System.out.println("\t16-tarjan");
+        System.out.println("\t17-toPruferCode");
+        System.out.println("\t18-pruferToGraph");
+        System.out.println("Output :");
+        System.out.println("\t19-toString");
+        System.out.println("\t20-writeTheGraphInAFile");
+        System.out.println("\t21-display");
+    }
+
     @Override
     public String toString() {
         return "Summits:"+summits.toString()+"\nBridges:"+bridges.toString()+"\nOriented:"+oriented+"\nValued:"+valued;
