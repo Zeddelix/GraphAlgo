@@ -5,7 +5,7 @@
       <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar!/" />
       <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test.jar!/" />
       <root url="file://$KOTLIN_BUNDLED$/lib" />
-      <root url="file://$APPLICATION_HOME_DIR$/plugins/Jung" />
+      <root url="file://$PROJECT_DIR$/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
@@ -13,9 +13,11 @@
       <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-reflect-sources.jar!/" />
       <root url="jar://$KOTLIN_BUNDLED$/lib/kotlin-test-sources.jar!/" />
       <root url="file://$KOTLIN_BUNDLED$/lib" />
+      <root url="file://$PROJECT_DIR$/lib" />
     </SOURCES>
-    <jarDirectory url="file://$APPLICATION_HOME_DIR$/plugins/Jung" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib" recursive="false" />
     <jarDirectory url="file://$KOTLIN_BUNDLED$/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$KOTLIN_BUNDLED$/lib" recursive="false" type="SOURCES" />
   </library>
 </component>

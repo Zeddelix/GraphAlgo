@@ -20,7 +20,7 @@ public class SUMMIT {
         this(null);
     }
 
-    //GETTERS
+    //GETTERS & SETTERS
     public int getKey() {
         return key;
     }
@@ -29,12 +29,15 @@ public class SUMMIT {
         return info;
     }
 
+    public void setInfo(Object info) {
+        this.info = info;
+    }
+
     //OUTPUT
     @Override
     public String toString() {
         String s="(";
-        if (info ==null) s+=String.valueOf(key);
-        else s+= info.toString();
+        s+=String.valueOf(key);
         s+=")";
         return s;
     }
