@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e15226ba-76b8-4414-919b-c64bbc1839ad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dessin/Fenêtre.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entreeAuClavier.txt" beforeDir="false" afterPath="$PROJECT_DIR$/entreeAuClavier.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/G.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPH.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPH.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPHALGO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GraphAlgo/GRAPHALGO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/dessin/Fenêtre.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/GraphAlgo/dessin/Zone.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GRAPH.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GRAPH.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GRAPHALGO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GRAPHALGO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dessin/Fenêtre.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,11 +46,19 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$APPLICATION_HOME_DIR$/plugins/Jung/collections-generic-4.01.jar" />
+    <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="android.project.structure" />
   </component>
-  <component name="RunManager" selected="Application.Fenêtre">
+  <component name="RunManager" selected="Application.GRAPHALGO">
     <configuration name="Dessin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="dessin.Dessin" />
       <module name="GraphAlgo" />
@@ -109,10 +121,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.GRAPHALGO" />
         <item itemvalue="Application.Fenêtre" />
         <item itemvalue="Application.G" />
         <item itemvalue="Application.Dessin" />
-        <item itemvalue="Application.GRAPHALGO" />
         <item itemvalue="Application.ReadFile" />
       </list>
     </recent_temporary>
@@ -127,6 +139,8 @@
       <updated>1618083641873</updated>
       <workItem from="1618083644870" duration="2995000" />
       <workItem from="1618122965097" duration="10179000" />
+      <workItem from="1618320463734" duration="1003000" />
+      <workItem from="1618321492775" duration="2737000" />
     </task>
     <servers />
   </component>
@@ -150,131 +164,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/GRAPH.java</url>
-          <line>669</line>
+          <line>679</line>
           <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>35</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>37</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>141</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>142</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>42</line>
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>51</line>
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>59</line>
-          <option name="timeStamp" value="43" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>70</line>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>71</line>
-          <option name="timeStamp" value="46" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>72</line>
-          <option name="timeStamp" value="48" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>74</line>
-          <option name="timeStamp" value="49" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>77</line>
-          <option name="timeStamp" value="50" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>40</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>41</line>
-          <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>55</line>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>56</line>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>57</line>
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>68</line>
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>67</line>
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>66</line>
-          <option name="timeStamp" value="59" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/dessin/Fenêtre.java</url>
-          <line>34</line>
-          <properties class="dessin.Zone" method="paintComponent">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
