@@ -1041,6 +1041,7 @@ public class GRAPH {
         userInterface.setSize(200,200);
         userInterface.getContentPane().add(addBridge, BorderLayout.NORTH);
         userInterface.getContentPane().add(addSummit, BorderLayout.NORTH);
+        userInterface.setLocation(1700,300);
 
 
         addSummit.addActionListener(new ActionListener(){
