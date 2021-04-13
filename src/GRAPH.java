@@ -1038,7 +1038,7 @@ public class GRAPH {
         JButton addSummit = new JButton("Ajouter un sommet");
         JButton addBridge = new JButton("Ajouter un lien");
         userInterface.setLocationRelativeTo(frame);
-        userInterface.setSize(200,200);
+        userInterface.setSize(300,200);
         userInterface.getContentPane().add(addBridge, BorderLayout.NORTH);
         userInterface.getContentPane().add(addSummit, BorderLayout.NORTH);
         userInterface.setLocation(1700,300);
