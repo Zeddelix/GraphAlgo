@@ -180,10 +180,13 @@ public class GRAPH {
             this.summits = summitstxt;
 
             while ((line = br.readLine()) != null) {
-                chaine += line;
-                chaine += ",";
+                if (!line.contains("#")){
+                    chaine += line;
+                    chaine += ",";
+                }
+
             }
-            System.out.println(chaine);
+
             String[] arrOfStr = chaine.split(",");
             if (this.valued == false) {
                 for (int i = 0; i < arrOfStr.length - 1; i += 2) {
@@ -950,16 +953,6 @@ public class GRAPH {
         return answer;
     }
 
-    //OUTPUT
-
-
-    public void writeTheGraphInAFile(String[] args) {
-
-    }
-
-    public void display() {
-
-    }
 
     //Onglet d'explication
     public void help() {

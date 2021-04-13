@@ -38,8 +38,6 @@ public class SUMMIT {
     public String toString() {
         String s="(";
         s+=String.valueOf(key);
-        //if (info ==null) s+=String.valueOf(key);
-        //else s+= info.toString();
         s+=")";
         return s;
     }

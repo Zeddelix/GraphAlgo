@@ -67,8 +67,10 @@ public class GRAPHALGO {
         bl1.add(b7);
         bl1.add(b8);
         GRAPH g = new GRAPH(l1,true,bl1,true);
-        g.afficherGraph();
-        g.djikstra(g.getSpecificSummitByKey(1)).afficherGraph();
+        //g.djikstra(g.getSpecificSummitByKey(1)).afficherGraph();
+
+        GRAPH g1 = new GRAPH("entreeAuClavier");
+        g1.afficherGraph();
 
 
 
@@ -125,7 +127,7 @@ public class GRAPHALGO {
         /*GRAPH g = new GRAPH("entreeAuClavier");
         System.out.println(g.toString());
         g.sortieFichier("sortieGraph");*/
-
+        /*
 
         System.out.println("\nDjikstra :");
         g.djikstra(s1);
@@ -134,6 +136,8 @@ public class GRAPHALGO {
         System.out.println("\nTarjan : :");
         System.out.println(g.tarjan());
         g.sortieFichier("sortieGraph");
+        */
+
 
     }
 }

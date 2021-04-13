@@ -1,6 +1,7 @@
 7
 true
 true
+##### Liens à entrer sous la forme "n°Sommet1,n°Sommet2,Poids"
 1,5,2
 1,2,1
 2,5,1
