@@ -25,7 +25,7 @@ public class GRAPHALGO {
 
     public static void main(String args[]) throws IOException {
 
-        SUMMIT s1 = new SUMMIT("1");
+        /*SUMMIT s1 = new SUMMIT("1");
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
         SUMMIT s4 = new SUMMIT ("4");
@@ -66,10 +66,11 @@ public class GRAPHALGO {
         bl1.add(b6);
         bl1.add(b7);
         bl1.add(b8);
-        GRAPH g = new GRAPH(l1,true,bl1,true);
+        GRAPH g = new GRAPH(l1,true,bl1,true);*/
         //g.djikstra(g.getSpecificSummitByKey(1)).afficherGraph();
 
-        GRAPH g1 = new GRAPH("entreeAuClavier");
+        //GRAPH g1 = new GRAPH("entreeAuClavier");
+        GRAPH g1 = new GRAPH();
         g1.afficherGraph();
 
 

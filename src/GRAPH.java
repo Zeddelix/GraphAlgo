@@ -4,7 +4,9 @@ import edu.uci.ics.jung.visualization.*;
 import edu.uci.ics.jung.visualization.decorators.*;
 
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
@@ -76,11 +78,11 @@ public class GRAPH {
     }
 
     public GRAPH() {
-        this.summits = null;
+        this.summits = new ArrayList<SUMMIT>();
         this.Adj = null;
         this.Aps = null;
         this.Fs = null;
-        this.bridges = null;
+        this.bridges = new ArrayList<BRIDGE>();
         this.oriented = false;
         this.valued = false;
     }
@@ -1029,7 +1031,72 @@ public class GRAPH {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(vv);
         frame.pack();
+        frame.setLocationRelativeTo(null);
+
+        JFrame userInterface = new JFrame("Interface utilisateur");
+        userInterface.setLayout(new GridLayout(2,1));
+        JButton addSummit = new JButton("Ajouter un sommet");
+        JButton addBridge = new JButton("Ajouter un lien");
+        userInterface.setLocationRelativeTo(frame);
+        userInterface.setSize(200,200);
+        userInterface.getContentPane().add(addBridge, BorderLayout.NORTH);
+        userInterface.getContentPane().add(addSummit, BorderLayout.NORTH);
+
+
+        addSummit.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SUMMIT s = new SUMMIT();
+                summits.add(s);
+                frame.dispose();
+                userInterface.dispose();
+                afficherGraph();
+            }
+        });
+
+        userInterface.add(addSummit);
+
+        addBridge.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane();
+                String firstQ = jop.showInputDialog(null, "Veuillez entrer un premier point", JOptionPane.QUESTION_MESSAGE);
+                String secondQ = jop.showInputDialog(null, "Veuillez entrer le second point", JOptionPane.QUESTION_MESSAGE);
+                int firstAnswer = Integer.parseInt(firstQ) - 1;
+                int secondAnswer = Integer.parseInt(secondQ)-1;
+                if ((firstAnswer>=summits.size())|| (secondAnswer>=summits.size())){
+                    JDialog d = new JDialog(frame, "Mauvaise entrée !");
+                    JLabel l = new JLabel("Un des sommets n'existe pas");
+                    d.add(l);
+                    d.setSize(200, 100);
+                    d.setVisible(true);
+
+                }
+                if (valued==true){
+                    String thirdQ = jop.showInputDialog(null, "Veuillez entrer le poids", JOptionPane.QUESTION_MESSAGE);
+                    int thirdAnsw = Integer.parseInt(thirdQ);
+                    bridges.add(new BRIDGE(summits.get(firstAnswer), summits.get(secondAnswer),thirdAnsw));
+                    }
+                else {
+                    bridges.add(new BRIDGE(summits.get(firstAnswer), summits.get(secondAnswer)));
+                }
+
+                frame.dispose();
+                userInterface.dispose();
+                afficherGraph();
+            }
+        });
+
+
         frame.setVisible(true);
+        userInterface.setVisible(true);
+
+
+
 
     }
 }
