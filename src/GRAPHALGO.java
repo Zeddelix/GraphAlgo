@@ -3,10 +3,28 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.graph.*;
+import edu.uci.ics.jung.graph.util.*;
+import edu.uci.ics.jung.visualization.VisualizationImageServer;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.SparseMultigraph;
+import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.decorators.*;
+
+import java.awt.Dimension;
+import javax.swing.JFrame;
+
+
+
 
 public class GRAPHALGO {
 
     public static void main(String args[]) throws IOException {
+
         SUMMIT s1 = new SUMMIT("1");
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
@@ -48,11 +66,13 @@ public class GRAPHALGO {
         bl1.add(b6);
         bl1.add(b7);
         bl1.add(b8);
-        bl1.add(b9);
-        bl1.add(b10);
-        bl1.add(b11);
-        bl1.add(b12);
-        GRAPH g = new GRAPH(l1,true,bl1,true);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
+        GRAPH g = new GRAPH(l1,true,bl1,true);
+        g.afficherGraph();
+        g.djikstra(g.getSpecificSummitByKey(1)).afficherGraph();
+
+
+
+
 
         //GRAPH g = new GRAPH(l1,false,bl1,false);// TEST CONSTRUCTEUR SOMMET+LIENS OK + GESTION DU PASSAGE ORIENTE / NON ORIENTE
 
@@ -102,8 +122,9 @@ public class GRAPHALGO {
 
         GRAPH g = new GRAPH(Fs, true, APS, false);*/
 
-        System.out.println("\nGraph initial :");
+        /*GRAPH g = new GRAPH("entreeAuClavier");
         System.out.println(g.toString());
+        g.sortieFichier("sortieGraph");*/
 
 
         System.out.println("\nDjikstra :");

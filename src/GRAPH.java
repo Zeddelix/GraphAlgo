@@ -1,8 +1,16 @@
+import edu.uci.ics.jung.algorithms.layout.*;
+import edu.uci.ics.jung.graph.*;
+import edu.uci.ics.jung.visualization.*;
+import edu.uci.ics.jung.visualization.decorators.*;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.List;
 
-public class GRAPH  {
+public class GRAPH {
     private List<SUMMIT> summits;
     private List<BRIDGE> bridges;
     private boolean[][] Adj;
@@ -10,7 +18,7 @@ public class GRAPH  {
     private boolean oriented, valued;
 
     //CONSTRUCTORS
-    public GRAPH (List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges, boolean valued) {
+    public GRAPH(List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges, boolean valued) {
         this.summits = summits;
         this.bridges = bridges;
         this.oriented = oriented;
@@ -18,185 +26,184 @@ public class GRAPH  {
         int Nb = summits.size();
         int fsSize = 0;
         int count = 1;
-        boolean[][] adj = new boolean[Nb+1][Nb+1];
-        for (BRIDGE b : bridges ) {
+        boolean[][] adj = new boolean[Nb + 1][Nb + 1];
+        for (BRIDGE b : bridges) {
             adj[b.getFirstSummit().getKey()][b.getSecondSummit().getKey()] = true;
-            if (oriented==false) {
+            if (oriented == false) {
                 adj[b.getSecondSummit().getKey()][b.getFirstSummit().getKey()] = true;
                 fsSize++;
             }
             fsSize++;
         }
-        for (SUMMIT s : summits){
+        for (SUMMIT s : summits) {
             fsSize++;
         }
 
-        this.Adj=adj;
+        this.Adj = adj;
 
-        int[] Aps = new int[Nb+1];
-        int[] Fs = new int[fsSize+1];
-        Aps[0]= Nb+1;
-        Fs[0] = fsSize+1;
-        Aps[1]=1;
+        int[] Aps = new int[Nb + 1];
+        int[] Fs = new int[fsSize + 1];
+        Aps[0] = Nb + 1;
+        Fs[0] = fsSize + 1;
+        Aps[1] = 1;
 
-        for (int i=1; i< adj.length; i++){
-            Aps[i]=count;
-            for (int j=1; j<adj[i].length;j++){
-                if (adj[i][j]==true){
-                    Fs[count]=j;
+        for (int i = 1; i < adj.length; i++) {
+            Aps[i] = count;
+            for (int j = 1; j < adj[i].length; j++) {
+                if (adj[i][j] == true) {
+                    Fs[count] = j;
                     count++;
                 }
             }
-            Fs[count]=0;
+            Fs[count] = 0;
             count++;
         }
 
-        this.Fs=Fs;
-        this.Aps=Aps;
-    }
-    public GRAPH (List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) {
-        this(summits, oriented, bridges, true);
-    }
-    public GRAPH (List<SUMMIT> summits, List<BRIDGE> bridges, boolean valued) {
-        this(summits, true, bridges,  valued);
+        this.Fs = Fs;
+        this.Aps = Aps;
     }
 
-    public GRAPH (List<SUMMIT> summits, List<BRIDGE> bridges) {
+    public GRAPH(List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) {
+        this(summits, oriented, bridges, true);
+    }
+
+    public GRAPH(List<SUMMIT> summits, List<BRIDGE> bridges, boolean valued) {
+        this(summits, true, bridges, valued);
+    }
+
+    public GRAPH(List<SUMMIT> summits, List<BRIDGE> bridges) {
         this(summits, true, bridges, true);
     }
 
-    public GRAPH () {
-        this.summits=null;
-        this.Adj=null;
-        this.Aps=null;
-        this.Fs=null;
-        this.bridges=null;
-        this.oriented=false;
-        this.valued=false;
+    public GRAPH() {
+        this.summits = null;
+        this.Adj = null;
+        this.Aps = null;
+        this.Fs = null;
+        this.bridges = null;
+        this.oriented = false;
+        this.valued = false;
     }
 
-    public GRAPH (boolean [][]adjacents, boolean oriented) {
+    public GRAPH(boolean[][] adjacents, boolean oriented) {
 
-        this.Adj=adjacents;
+        this.Adj = adjacents;
 
         List<SUMMIT> summits = new ArrayList<>();
         List<BRIDGE> bridges = new ArrayList<>();
-        for (int i = 1; i<adjacents.length; i++) { // Ajout des sommets dans la liste
+        for (int i = 1; i < adjacents.length; i++) { // Ajout des sommets dans la liste
             SUMMIT s = new SUMMIT();
             summits.add(s);
         }
-        for (int i = 1; i<adjacents.length; i++) { // Ajout des liens. Doit �tre s�par� puisqu'il nous faut d'abord la totalit� des sommets.
-            for (int j=1 ; j<adjacents.length; j++) {
-                if (adjacents[i][j]==true) {
-                    BRIDGE b = new BRIDGE(summits.get(j-1), summits.get(i-1));
+        for (int i = 1; i < adjacents.length; i++) { // Ajout des liens. Doit �tre s�par� puisqu'il nous faut d'abord la totalit� des sommets.
+            for (int j = 1; j < adjacents.length; j++) {
+                if (adjacents[i][j] == true) {
+                    BRIDGE b = new BRIDGE(summits.get(j - 1), summits.get(i - 1));
                     bridges.add(b);
-                    if (oriented==false) {
-                        b = new BRIDGE(summits.get(i-1), summits.get(j-1));
+                    if (oriented == false) {
+                        b = new BRIDGE(summits.get(i - 1), summits.get(j - 1));
                         if (!bridges.contains(b)) bridges.add(b);
                     }
                 }
             }
         }
-        this.summits=summits;
-        this.bridges=bridges;
-        this.oriented=oriented;
-        this.valued=false;
+        this.summits = summits;
+        this.bridges = bridges;
+        this.oriented = oriented;
+        this.valued = false;
 
     }
 
-    public GRAPH (int[] Fs, boolean oriented, int[] Aps, boolean valued) {
-        this.Aps=Aps;
-        this.Fs=Fs;
-        int count=1;
+    public GRAPH(int[] Fs, boolean oriented, int[] Aps, boolean valued) {
+        this.Aps = Aps;
+        this.Fs = Fs;
+        int count = 1;
         List<SUMMIT> summits = new ArrayList<>();
         List<BRIDGE> bridges = new ArrayList<>();
 
-        for (int i=1; i<Aps.length; i++) {
+        for (int i = 1; i < Aps.length; i++) {
             SUMMIT s = new SUMMIT();
             summits.add(s);
         }
 
-        for (int i=1 ; i<Fs.length; i++) {
-            if (Fs[i]!=0) {
-                BRIDGE b = new BRIDGE(summits.get(count-1), summits.get(Fs[i]-1) );
+        for (int i = 1; i < Fs.length; i++) {
+            if (Fs[i] != 0) {
+                BRIDGE b = new BRIDGE(summits.get(count - 1), summits.get(Fs[i] - 1));
                 bridges.add(b);
-            }
-            else count++;
+            } else count++;
         }
-        this.summits=summits;
-        this.bridges=bridges;
-        this.oriented=oriented;
-        this.valued=valued;
+        this.summits = summits;
+        this.bridges = bridges;
+        this.oriented = oriented;
+        this.valued = valued;
     }
 
-    public GRAPH (int[] Fs, int[] Aps, boolean valued) {
+    public GRAPH(int[] Fs, int[] Aps, boolean valued) {
         this(Fs, true, Aps, valued);
     }
 
-    public GRAPH (int[] Fs, boolean oriented, int[] Aps) {
+    public GRAPH(int[] Fs, boolean oriented, int[] Aps) {
         this(Fs, oriented, Aps, true);
     }
 
-    public GRAPH (int[] Fs, int[] Aps) {
+    public GRAPH(int[] Fs, int[] Aps) {
         this(Fs, true, Aps, true);
     }
 
-    public GRAPH (String nomFichier){   //creation fichier
-        String chaine="";
-        String fichier =nomFichier+".txt";
+    public GRAPH(String nomFichier) {   //creation fichier
+        String chaine = "";
+        String fichier = nomFichier + ".txt";
         System.out.println(fichier);
         ArrayList<SUMMIT> summitstxt = new ArrayList<>();
         ArrayList<BRIDGE> bridgestxt = new ArrayList<>();
 
 
         //lecture du fichier texte
-        try{
-            InputStream ips=new FileInputStream(fichier);
-            InputStreamReader ipsr=new InputStreamReader(ips);
-            BufferedReader br=new BufferedReader(ipsr);
+        try {
+            InputStream ips = new FileInputStream(fichier);
+            InputStreamReader ipsr = new InputStreamReader(ips);
+            BufferedReader br = new BufferedReader(ipsr);
             String line;
             int ind1, ind2, ind3;
-            line=br.readLine();
-            int nombreSommet= Integer.parseInt(line);
+            line = br.readLine();
+            int nombreSommet = Integer.parseInt(line);
 
-            line=br.readLine();
-            this.oriented=Boolean.parseBoolean(line); // Orienté ?
-            line=br.readLine();
-            this.valued=Boolean.parseBoolean(line); // valué ?
+            line = br.readLine();
+            this.oriented = Boolean.parseBoolean(line); // Orienté ?
+            line = br.readLine();
+            this.valued = Boolean.parseBoolean(line); // valué ?
 
 
-            for (int i=0; i<nombreSommet; i++){
+            for (int i = 0; i < nombreSommet; i++) {
                 summitstxt.add(new SUMMIT());
             }
-            this.summits=summitstxt;
+            this.summits = summitstxt;
 
-            while ((line=br.readLine())!=null){
-                chaine+=line;
-                chaine+=",";
+            while ((line = br.readLine()) != null) {
+                chaine += line;
+                chaine += ",";
             }
             System.out.println(chaine);
             String[] arrOfStr = chaine.split(",");
-            if (this.valued==false){
-                for (int i=0; i<arrOfStr.length-1; i+=2){
+            if (this.valued == false) {
+                for (int i = 0; i < arrOfStr.length - 1; i += 2) {
                     ind1 = Integer.parseInt(arrOfStr[i]);
-                    ind2 = Integer.parseInt(arrOfStr[i+1]);
-                    BRIDGE b = new BRIDGE(summits.get(ind1-1),summits.get(ind2-1));
+                    ind2 = Integer.parseInt(arrOfStr[i + 1]);
+                    BRIDGE b = new BRIDGE(summits.get(ind1 - 1), summits.get(ind2 - 1));
+                    bridgestxt.add(b);
+                }
+            } else {
+                for (int i = 0; i < arrOfStr.length - 2; i += 3) {
+                    ind1 = Integer.parseInt(arrOfStr[i]);
+                    ind2 = Integer.parseInt(arrOfStr[i + 1]);
+                    ind3 = Integer.parseInt(arrOfStr[i + 2]);
+                    BRIDGE b = new BRIDGE(summits.get(ind1 - 1), summits.get(ind2 - 1), ind3);
                     bridgestxt.add(b);
                 }
             }
-            else{
-                for (int i=0; i<arrOfStr.length-2; i+=3){
-                    ind1 = Integer.parseInt(arrOfStr[i]);
-                    ind2 = Integer.parseInt(arrOfStr[i+1]);
-                    ind3 = Integer.parseInt(arrOfStr[i+2]);
-                    BRIDGE b = new BRIDGE(summits.get(ind1-1),summits.get(ind2-1),ind3);
-                    bridgestxt.add(b);
-                }
-            }
-            this.bridges=bridgestxt;
+            this.bridges = bridgestxt;
             br.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
 
@@ -205,22 +212,21 @@ public class GRAPH  {
 
     public void sortieFichier(String nomFichier) throws IOException {   //creation fichier pour sortie
 
-        try{
-            String chaine="";
-            File file =new File(nomFichier+".txt");
+        try {
+            String chaine = "";
+            File file = new File(nomFichier + ".txt");
             if (!file.exists()) {
                 file.createNewFile();
             }
-            chaine+="Valué : "+this.valued+"\n";
-            chaine+="Orienté :" +this.oriented+"\n";
-            chaine+="Liste de sommets : "+this.summits.toString()+"\n";
-            chaine+="Liste des liens :" + this.bridges+"\n";
+            chaine += "Valué : " + this.valued + "\n";
+            chaine += "Orienté :" + this.oriented + "\n";
+            chaine += "Liste de sommets : " + this.summits.toString() + "\n";
+            chaine += "Liste des liens :" + this.bridges + "\n";
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(chaine);
             bw.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
 
@@ -228,14 +234,13 @@ public class GRAPH  {
     }
 
 
-
-    public GRAPH pruferToGraph(int[] prufer){
+    public GRAPH pruferToGraph(int[] prufer) {
         ArrayList<Integer> L = new ArrayList<>();
         ArrayList<Integer> S = new ArrayList<>();
         ArrayList<SUMMIT> summits = new ArrayList<>();
         ArrayList<BRIDGE> bridges = new ArrayList<>();
 
-        for(int i : prufer)
+        for (int i : prufer)
             S.add(i);
 
         for (int i = 1; i <= prufer.length; ++i) {
@@ -243,8 +248,8 @@ public class GRAPH  {
             L.add(i);
         }
 
-        for(int i  = 0; i < S.size()-1; ++i){
-            int j = i+1;
+        for (int i = 0; i < S.size() - 1; ++i) {
+            int j = i + 1;
             while (j < L.size() && S.contains(L.get(j)))
                 ++j;
             bridges.add(new BRIDGE(summits.get(i), summits.get(j)));
@@ -255,41 +260,41 @@ public class GRAPH  {
         return new GRAPH(summits, false, bridges);
     }
 
-    public int smallestValue(ArrayList<Integer> list){
+    public int smallestValue(ArrayList<Integer> list) {
         int smallest = 0;
-        for (int i = 1; i < list.size(); ++i){
-            if(smallest > list.get(i))
+        for (int i = 1; i < list.size(); ++i) {
+            if (smallest > list.get(i))
                 smallest = i;
         }
         return smallest;
     }
 
 
-
-
-
-
     //GETTERS
-    public List<SUMMIT> getSummits(){return summits;}
+    public List<SUMMIT> getSummits() {
+        return summits;
+    }
 
-    public SUMMIT getSpecificSummits(int indice){return summits.get(indice);}
+    public SUMMIT getSpecificSummits(int indice) {
+        return summits.get(indice);
+    }
 
     public SUMMIT getSpecificSummitByKey(int key) {
-        for(SUMMIT s:summits) {
+        for (SUMMIT s : summits) {
             if (s.getKey() == key)
                 return s;
         }
         return null;
     }
 
-    public List<BRIDGE> getBridges(){
+    public List<BRIDGE> getBridges() {
         return bridges;
     }
 
     public List<BRIDGE> getSummitBridges(SUMMIT s) {
         List<BRIDGE> bridgesOfS = new ArrayList<>();
-        for(int i=0; i<bridges.size();++i) {
-            if(bridges.get(i).getFirstSummit().equals(s) ||bridges.get(i).getSecondSummit().equals(s))
+        for (int i = 0; i < bridges.size(); ++i) {
+            if (bridges.get(i).getFirstSummit().equals(s) || bridges.get(i).getSecondSummit().equals(s))
                 bridgesOfS.add(bridges.get(i));
         }
         return bridgesOfS;
@@ -299,7 +304,7 @@ public class GRAPH  {
         return summits.size();
     }
 
-    public int numberOfBridges(){
+    public int numberOfBridges() {
         return this.bridges.size();
     }
 
@@ -355,11 +360,11 @@ public class GRAPH  {
         return 0;
     }
 
-    public int[][]matDist(){
+    public int[][] matDist() {
         return null;
     }
 
-    public int[] ListSummitRank(){
+    public int[] ListSummitRank() {
         return null;
     }
 
@@ -369,8 +374,8 @@ public class GRAPH  {
 
     //TARJAN
     private boolean allBridgesProcessed(List<Boolean> processed) {
-        for(boolean proc: processed) {
-            if(proc == false)
+        for (boolean proc : processed) {
+            if (proc == false)
                 return false;
         }
         return true;
@@ -409,8 +414,8 @@ public class GRAPH  {
     }
 
     private boolean inPrem(int summit, List<Integer> PREM) {
-        for(int i = 1; i < PREM.get(0)+1; ++i) {
-            if(PREM.get(i) == summit)
+        for (int i = 1; i < PREM.get(0) + 1; ++i) {
+            if (PREM.get(i) == summit)
                 return true;
         }
         return false;
@@ -448,7 +453,7 @@ public class GRAPH  {
             CFC.add(-1);
             ENTARJ.add(false);
         }
-        for(int i =0; i<bridges.size(); ++i) {
+        for (int i = 0; i < bridges.size(); ++i) {
             traite.add(false);
         }
 
@@ -514,8 +519,8 @@ public class GRAPH  {
 
                 if(MU.get(sommet) == NUM.get(sommet)) {
                     //Remplir PREM & CFC, Update TARJ & ENTARJ
-                    PREM.add(TARJ.get(TARJ.size()-1));
-                    PREM.set(0,PREM.get(0)+1);
+                    PREM.add(TARJ.get(TARJ.size() - 1));
+                    PREM.set(0, PREM.get(0) + 1);
                     ++groupe;
                     for(int i = TARJ.size()-1; i>= 0; --i) {
 
@@ -562,8 +567,8 @@ public class GRAPH  {
             if(s1 != s2) { //si c'est pas un lien intra sommet
                 exist=false;
                 int i = 0;
-                while(i < newBridges.size()-1 & !exist) {
-                    if(newBridges.get(i).getFirstSummit().getKey()==s1 && newBridges.get(i).getSecondSummit().getKey()==s2)
+                while (i < newBridges.size() - 1 & !exist) {
+                    if (newBridges.get(i).getFirstSummit().getKey() == s1 && newBridges.get(i).getSecondSummit().getKey() == s2)
                         exist = true;
                     else
                         ++i;
@@ -614,41 +619,42 @@ public class GRAPH  {
                 throw new RuntimeException("djikstra can't use negative values.");
             }
         }
-        for (int i = 0; i <= this.getSummits().size(); ++i){
+        for (int i = 0; i <= this.getSummits().size(); ++i) {
             this.distances.add(Integer.MAX_VALUE);
             this.pred.add(0);
         }
 
         this.distances.set(origin.getKey(), 0);
-        this.pred.set(origin.getKey(),0);
+        this.pred.set(origin.getKey(), 0);
 
-        while (checkedSummits.size()<summits.size()){
-            for (BRIDGE b : bridges){
-                if (b.getFirstSummit()==origin) uncheckSummits.add(b.getSecondSummit()); // Liste les successeurs du sommet
+        while (checkedSummits.size() < summits.size()) {
+            for (BRIDGE b : bridges) {
+                if (b.getFirstSummit() == origin)
+                    uncheckSummits.add(b.getSecondSummit()); // Liste les successeurs du sommet
             }
-            for (SUMMIT s : uncheckSummits){
-                for (BRIDGE b : bridges){
-                    if (b.getFirstSummit()==origin && b.getSecondSummit()==s){
-                        if (distances.get(s.getKey()) > distances.get(origin.getKey())+b.getWeight() ){
-                            distances.set(s.getKey(), distances.get(origin.getKey())+b.getWeight());
-                            pred.set(s.getKey(),origin.getKey());
+            for (SUMMIT s : uncheckSummits) {
+                for (BRIDGE b : bridges) {
+                    if (b.getFirstSummit() == origin && b.getSecondSummit() == s) {
+                        if (distances.get(s.getKey()) > distances.get(origin.getKey()) + b.getWeight()) {
+                            distances.set(s.getKey(), distances.get(origin.getKey()) + b.getWeight());
+                            pred.set(s.getKey(), origin.getKey());
                         }
                     }
                 }
 
             }
             checkedSummits.add(origin);
-            int mini=1;
-            for (SUMMIT s : summits){
-                if (!checkedSummits.contains(s)) mini=s.getKey();
+            int mini = 1;
+            for (SUMMIT s : summits) {
+                if (!checkedSummits.contains(s)) mini = s.getKey();
             }
-            for (int i=2; i<distances.size()-1;i++){
-                if(distances.get(mini)>distances.get(i) && !checkedSummits.contains(summits.get(i-1))){
-                    mini=i;
+            for (int i = 2; i < distances.size() - 1; i++) {
+                if (distances.get(mini) > distances.get(i) && !checkedSummits.contains(summits.get(i - 1))) {
+                    mini = i;
                 }
 
             }
-            origin=summits.get(mini-1);
+            origin = summits.get(mini - 1);
         }
 
 
@@ -670,8 +676,8 @@ public class GRAPH  {
         }
         */
         List<BRIDGE> newBridges = new ArrayList<>();
-        for (int i=2; i< pred.size()-1;i++){
-            BRIDGE b = new BRIDGE(summits.get(pred.get(i)-1), summits.get(i-1),(distances.get(i)-distances.get(pred.get(i))));
+        for (int i = 2; i < pred.size() - 1; i++) {
+            BRIDGE b = new BRIDGE(summits.get(pred.get(i) - 1), summits.get(i - 1), (distances.get(i) - distances.get(pred.get(i))));
             newBridges.add(b);
         }
         System.out.println(newBridges.toString());
@@ -681,7 +687,7 @@ public class GRAPH  {
     private void minimalDistances(SUMMIT summit) {
         for (BRIDGE target : this.getSummitBridges(summit)) {
             SUMMIT targetSummit;
-            if(target.getFirstSummit() != summit)
+            if (target.getFirstSummit() != summit)
                 targetSummit = target.getFirstSummit();
             else
                 targetSummit = target.getSecondSummit();
@@ -689,7 +695,7 @@ public class GRAPH  {
             if (getShortestPath(targetSummit) > getShortestPath(summit) + target.getWeight()) {
                 this.distances.set(targetSummit.getKey(), getShortestPath(summit) + target.getWeight());
                 this.pred.set(summit.getKey(), targetSummit.getKey());
-                if(!checkedSummits.contains(targetSummit))
+                if (!checkedSummits.contains(targetSummit))
                     this.uncheckSummits.add(targetSummit);
             }
         }
@@ -701,7 +707,7 @@ public class GRAPH  {
             if (bridge.getFirstSummit().equals(departure) && bridge.getFirstSummit().equals(arrival))
                 return bridge.getWeight();
         }
-        System.out.println("[LOG] Error, this situation shouldn't happen. " + departure.getKey() + " is not connected with " + arrival.getKey()+".");
+        System.out.println("[LOG] Error, this situation shouldn't happen. " + departure.getKey() + " is not connected with " + arrival.getKey() + ".");
         return Integer.MAX_VALUE;
     }
 
@@ -722,12 +728,12 @@ public class GRAPH  {
     public void Kruskal(GRAPH reduit) {
 
         int n = summits.size();
-        int[] prem = new int[n+1];
-        int[] pilch = new int[n+1];
-        int[] cfc= new int[n+1];
-        int[] nbElem= new int[n+1];
+        int[] prem = new int[n + 1];
+        int[] pilch = new int[n + 1];
+        int[] cfc = new int[n + 1];
+        int[] nbElem = new int[n + 1];
 
-        for(int i = 1;i <= n;i++){
+        for (int i = 1; i <= n; i++) {
             prem[i] = i;
             pilch[i] = 0;
             cfc[i] = i;
@@ -736,7 +742,7 @@ public class GRAPH  {
 
         //Trie des arêtes
         int p;
-        for(int i = 0; i < bridges.size()-1;i++) {
+        for (int i = 0; i < bridges.size() - 1; i++) {
             for (int j = i + 1; j < bridges.size(); j++) {
                 if (bridges.get(j).getWeight() < bridges.get(i).getWeight() ||
                         (bridges.get(j).getWeight() == bridges.get(j).getWeight() && bridges.get(j).getFirstSummit().getKey() < bridges.get(i).getSecondSummit().getKey()) ||
@@ -752,8 +758,8 @@ public class GRAPH  {
         reduit.bridges.clear();
         int x;
         int y;
-        int i = 0, j =0;
-        while (j < n-1) {
+        int i = 0, j = 0;
+        while (j < n - 1) {
             BRIDGE ar = bridges.get(i);
             x = cfc[ar.getFirstSummit().getKey()];
             y = cfc[ar.getSecondSummit().getKey()];
@@ -783,10 +789,10 @@ public class GRAPH  {
 
     public int[][] Dantzig() {
 
-        int [][] gr = matDist();
+        int[][] gr = matDist();
         int n = summits.size();
         int[][] mat = new int[n][n];
-        for (int i = 1;i <= n ;i++) {
+        for (int i = 1; i <= n; i++) {
             for (int j = 1; i <= n; i++) {
                 if (i == j) {
                     mat[i][i] = 0;
@@ -795,7 +801,7 @@ public class GRAPH  {
                 }
             }
         }
-        for(int k = 1 ; k <= n;k++) {
+        for (int k = 1; k <= n; k++) {
             for (int i = 1; i < k; i++) {
                 int min1 = 0, min2 = 0;
                 for (int j = k; j >= 1; j--) {
@@ -811,7 +817,7 @@ public class GRAPH  {
                 mat[k + 1][i] = min1;
                 mat[i][k + 1] = min2;
             }
-            int t=0;
+            int t = 0;
             for (int j = k; j >= 1; j--) {
                 t = mat[k + 1][j] + mat[j][k + 1];
             }
@@ -819,9 +825,9 @@ public class GRAPH  {
             if (t < 0) {
                 break;
             } else {
-                for(int i = 1;i <= k;i++) {
-                    for(int j = 1;j <= k;j++) {
-                        if (mat[i][j] > (mat[i][k+1] + mat[k+1][j])) {
+                for (int i = 1; i <= k; i++) {
+                    for (int j = 1; j <= k; j++) {
+                        if (mat[i][j] > (mat[i][k + 1] + mat[k + 1][j])) {
                             mat[i][j] = mat[i][k + 1] + mat[k + 1][j];
                         }
                     }
@@ -831,12 +837,13 @@ public class GRAPH  {
         return mat;
 
     }
-    public ArrayList<Integer> toPruferCode(){
+
+    public ArrayList<Integer> toPruferCode() {
 
         ArrayList<Integer> prufer = new ArrayList<>();
 
-        while (prufer.size()<summits.size()-2){
-            SUMMIT s = this.summits.get(this.smallestLeaf()-1);
+        while (prufer.size() < summits.size() - 2) {
+            SUMMIT s = this.summits.get(this.smallestLeaf() - 1);
             SUMMIT voisin = getNeighbour(s);
             prufer.add(voisin.getKey());
             bridges.removeIf(b -> b.contains(s));
@@ -846,11 +853,11 @@ public class GRAPH  {
         return prufer;
     }
 
-    private SUMMIT getNeighbour(SUMMIT s){
-        for(BRIDGE bridge : this.bridges){
-            if(bridge.contains(s) ){
+    private SUMMIT getNeighbour(SUMMIT s) {
+        for (BRIDGE bridge : this.bridges) {
+            if (bridge.contains(s)) {
                 SUMMIT voisin;
-                if(bridge.getFirstSummit() == s)
+                if (bridge.getFirstSummit() == s)
                     voisin = bridge.getSecondSummit();
                 else
                     voisin = bridge.getFirstSummit();
@@ -860,13 +867,13 @@ public class GRAPH  {
         throw new RuntimeException("[LOG] Error getNeighbour");
     }
 
-    private boolean isLeaf(SUMMIT summit){
-        int i=0;
+    private boolean isLeaf(SUMMIT summit) {
+        int i = 0;
         for (BRIDGE bridge : this.bridges) {
-            if(bridge.contains(summit))
+            if (bridge.contains(summit))
                 i++;
         }
-        return (i==1);
+        return (i == 1);
     }
 
     /*public boolean isLeafWithDeleteSummit(ArrayList<Integer> deleted, SUMMIT summit){
@@ -886,18 +893,18 @@ public class GRAPH  {
 
     }*/
 
-    private int smallestLeaf(){
+    private int smallestLeaf() {
         int min = Integer.MAX_VALUE;
-        for (SUMMIT s : this.summits){
-            if(this.isLeaf(s) ){
-                if(min > s.getKey())
+        for (SUMMIT s : this.summits) {
+            if (this.isLeaf(s)) {
+                if (min > s.getKey())
                     min = s.getKey();
             }
         }
         return min;
     }
 
-    public GRAPH decodagePrufer(ArrayList <Integer> d_tableauPrufer) {
+    public GRAPH decodagePrufer(ArrayList<Integer> d_tableauPrufer) {
         ArrayList Summit = new ArrayList<Integer>();
         ArrayList ListOfSummit = new ArrayList<SUMMIT>();
         ArrayList Bridges = new ArrayList<BRIDGE>();
@@ -910,42 +917,40 @@ public class GRAPH  {
         int i = 0, j = 0;
 
         while (Summit.size() > 2) {
-            j=0;
-            while (i < d_tableauPrufer.size() && j < Summit.size() && Contain(d_tableauPrufer, (Integer) Summit.get(j)) ) {
+            j = 0;
+            while (i < d_tableauPrufer.size() && j < Summit.size() && Contain(d_tableauPrufer, (Integer) Summit.get(j))) {
                 j++;
             }
             if (j < Summit.size()) {
-                if (!SummitGraph.contains(ListOfSummit.get(d_tableauPrufer.get(i)-1)))
-                    SummitGraph.add(ListOfSummit.get(d_tableauPrufer.get(i)-1));
-                if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(j)-1)))
-                    SummitGraph.add(ListOfSummit.get((int) Summit.get(j)-1));
-                Bridges.add(new BRIDGE((SUMMIT) ListOfSummit.get(d_tableauPrufer.get(i)-1), (SUMMIT) ListOfSummit.get((int) Summit.get(j)-1)));
+                if (!SummitGraph.contains(ListOfSummit.get(d_tableauPrufer.get(i) - 1)))
+                    SummitGraph.add(ListOfSummit.get(d_tableauPrufer.get(i) - 1));
+                if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(j) - 1)))
+                    SummitGraph.add(ListOfSummit.get((int) Summit.get(j) - 1));
+                Bridges.add(new BRIDGE((SUMMIT) ListOfSummit.get(d_tableauPrufer.get(i) - 1), (SUMMIT) ListOfSummit.get((int) Summit.get(j) - 1)));
                 d_tableauPrufer.remove(d_tableauPrufer.get(i));
                 Summit.remove(Summit.get(j));
 
 
             } else i++;
         }
-        if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(0)-1)))
-            SummitGraph.add(ListOfSummit.get((int) Summit.get(0)-1));
-        if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(1)-1)))
-            SummitGraph.add(ListOfSummit.get((int) Summit.get(1)-1));
-        Bridges.add(new BRIDGE((SUMMIT) ListOfSummit.get((int) Summit.get(0)-1), (SUMMIT) ListOfSummit.get((int) Summit.get(1)-1)));
+        if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(0) - 1)))
+            SummitGraph.add(ListOfSummit.get((int) Summit.get(0) - 1));
+        if (!SummitGraph.contains(ListOfSummit.get((int) Summit.get(1) - 1)))
+            SummitGraph.add(ListOfSummit.get((int) Summit.get(1) - 1));
+        Bridges.add(new BRIDGE((SUMMIT) ListOfSummit.get((int) Summit.get(0) - 1), (SUMMIT) ListOfSummit.get((int) Summit.get(1) - 1)));
         GRAPH g = new GRAPH(SummitGraph, false, Bridges, false);
         return g;
     }
 
-    public boolean Contain(ArrayList <Integer> A, int B){
+    public boolean Contain(ArrayList<Integer> A, int B) {
         boolean answer = false;
-        for(int i=0;i<A.size();i++){
-            if(A.get(i)==B) answer=true;
+        for (int i = 0; i < A.size(); i++) {
+            if (A.get(i) == B) answer = true;
         }
         return answer;
     }
 
     //OUTPUT
-
-
 
 
     public void writeTheGraphInAFile(String[] args) {
@@ -989,10 +994,51 @@ public class GRAPH  {
 
     @Override
     public String toString() {
-        if (this.bridges!=null && this.summits!=null) {
+        if (this.bridges != null && this.summits != null) {
             return "Summits:" + summits.toString() + "\nBridges:" + bridges.toString() + "\nOriented:" + oriented + "\nValued:" + valued;
+        } else return "Mauvaise entrée";
+    }
+
+    public void afficherGraph() {
+        Graph g;
+        if (this.oriented==true) g = new DirectedSparseMultigraph<SUMMIT, BRIDGE>();
+        else g = new SparseMultigraph<SUMMIT, BRIDGE>();
+        for (int i = 0; i < summits.size(); i++) {
+            g.addVertex(summits.get(i));
         }
-        else return "Mauvaise entrée";
+        for (int i = 0; i < bridges.size(); i++) {
+            g.addEdge(bridges.get(i), bridges.get(i).getFirstSummit(), bridges.get(i).getSecondSummit());
+        }
+
+        Layout<Integer, String> layout = new CircleLayout(g);
+        layout.setSize(new Dimension(800, 800));
+        BasicVisualizationServer<Integer, String> vv =
+                new BasicVisualizationServer<Integer, String>(layout);
+        vv.setPreferredSize(new Dimension(850, 850));
+        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller() {
+            @Override
+            public String transform(Object v) {
+
+                return Integer.toString(((SUMMIT) v).getKey());
+            }
+        });
+        if (this.valued==true) {
+            vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller() {
+                @Override
+                public String transform(Object v) {
+
+                    return Integer.toString(((BRIDGE) v).getWeight());
+                }
+            });
+        }
+
+        JFrame frame = new JFrame("Simple Graph View");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(vv);
+        frame.pack();
+        frame.setVisible(true);
+
     }
 }
+
 
