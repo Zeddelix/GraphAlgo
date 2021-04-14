@@ -330,6 +330,14 @@ public class GRAPH {
         return null;
     }
 
+    public void setValued (boolean b){
+        this.valued=b;
+    }
+
+    public void setOriented (boolean b){
+        this.oriented=b;
+    }
+
     public List<BRIDGE> getBridges() {
         return bridges;
     }
@@ -1019,6 +1027,8 @@ public class GRAPH {
         JButton kruskal = new JButton("Appliquer Kruskal");
         JButton reset = new JButton("Remise à zero");
         JButton rank = new JButton("Rang des sommets");
+        JButton valued = new JButton("Changer valué ou non");
+        JButton oriented = new JButton("Changer orienté ou non");
         JButton help = new JButton("Manuel d'utilisation");
         JButton exit = new JButton("Quitter");
 
@@ -1033,6 +1043,8 @@ public class GRAPH {
         userInterface.getContentPane().add(rank);
         userInterface.getContentPane().add(reset);
         userInterface.getContentPane().add(help);
+        userInterface.getContentPane().add(valued);
+        userInterface.getContentPane().add(oriented);
         userInterface.getContentPane().add(exit);
         userInterface.setLocation(1000,300);
 
@@ -1068,6 +1080,32 @@ public class GRAPH {
                 SUMMIT.setAutoCount(autocountSaved);
                 summits=List.copyOf(savedSummits);
                 bridges=List.copyOf(savedBridges);
+                frame.dispose();
+                userInterface.dispose();
+                afficherGraph();
+            }
+        });
+
+        valued.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(isValued()==true) setValued(false);
+                else setValued(true);
+                frame.dispose();
+                userInterface.dispose();
+                afficherGraph();
+            }
+        });
+
+        oriented.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(isOriented()==true) setOriented(false);
+                else setOriented(true);
                 frame.dispose();
                 userInterface.dispose();
                 afficherGraph();
@@ -1225,7 +1263,7 @@ public class GRAPH {
                     d.setVisible(true);
 
                 }
-                if (valued==true){
+                if (isValued()){
                     String thirdQ = jop.showInputDialog(null, "Veuillez entrer le poids", JOptionPane.QUESTION_MESSAGE);
                     int thirdAnsw = Integer.parseInt(thirdQ);
                     bridges.add(new BRIDGE(summits.get(firstAnswer), summits.get(secondAnswer),thirdAnsw));
