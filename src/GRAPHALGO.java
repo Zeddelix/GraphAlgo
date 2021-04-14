@@ -304,6 +304,7 @@ public class GRAPHALGO {
         System.out.println("\t- GRAPH​(int[] Fs, int[] Aps, boolean valued) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Le graphique sera valué ou non en fonction du bouléen donnée en paramètre. Il ne sera pas orienté.");
         System.out.println("\t- GRAPH​(int[] Fs, boolean oriented, int[] Aps, boolean valued) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Le graphique sera orienté/valué ou non en fonction des deux bouléen donnée en paramètre.");
         System.out.println("\t- GRAPH​(boolean[][] adjacents, boolean oriented) : Constructeur qui créé un graphique à partir de la matrice d'adjacence. Le graphique sera orienté ou non en fonction du bouléen donnée en paramètre. Il ne sera pas valué.");
+        System.out.println("\t- GRAPH\u200B(ArrayList<Integer> d_tableauPrufer) : Constructeur qui créé un graphique a partir d'un tableau de prufer. Le tableau de prufer continue un graphique compressé.");
         System.out.println("\t- GRAPH​(String nomFichier) : Constructeur qui créé un graphique à partir d'un fichier texte.");
         System.out.println("Ajout & suppression: ");
         System.out.println("\t- addBridge : GRAPH.addBridge(BRIDGE lienÀAjouter);\n\t\tCette méthode permet d'ajouter un lien au tableau de liens du graphique par le biais de la classe BRIDGE. L'objet BRIDGE contient le sommet d'origine, le sommet cible ainsi que le poids de la liaison.");
