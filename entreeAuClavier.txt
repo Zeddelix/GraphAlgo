@@ -1,18 +1,21 @@
+##### Entrer le nombre de sommets #####
 7
+##### Entrer s'il est orienté ou non #####
 true
+##### Entrer s'il est valué ou non #####
 true
-##### Liens à entrer sous la forme "n°Sommet1,n°Sommet2,Poids"
-1,5,2
+##### Liens à entrer sous la forme "n°Sommet1,n°Sommet2,Poids" si valué ou "n°Sommet1,n°Sommet2" si non valué #####
+1,5,3
 1,2,1
-2,5,1
+2,5,2
 2,6,4
-3,1,0
-3,4,2
-4,7,4
-5,3,1
+3,1,7
+3,4,8
+4,7,9
+5,3,5
 5,4,6
-5,7,0
-6,5,1
+5,7,1
+6,5,2
 7,6,1
 
 

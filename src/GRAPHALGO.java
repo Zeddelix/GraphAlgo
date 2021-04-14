@@ -25,7 +25,9 @@ public class GRAPHALGO {
 
     public static void main(String args[]) throws IOException {
 
-        /*SUMMIT s1 = new SUMMIT("1");
+        /* ### TEST CONSTRUCTEUR DE BASE    ######
+
+        SUMMIT s1 = new SUMMIT("1"); // Creation d'un graph pour les tests - 7 sommets et 8 liens
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
         SUMMIT s4 = new SUMMIT ("4");
@@ -42,15 +44,10 @@ public class GRAPHALGO {
         BRIDGE b6 = new BRIDGE (s3,s4,2);
         BRIDGE b7 = new BRIDGE (s4,s7,4);
         BRIDGE b8 = new BRIDGE (s5,s4,6);
-        BRIDGE b9 = new BRIDGE (s5,s7,0);
-        BRIDGE b10 = new BRIDGE (s5,s3,1);
-        BRIDGE b11 = new BRIDGE (s6,s5,1);
-        BRIDGE b12 = new BRIDGE (s7,s6,1);
 
+        List<SUMMIT> l1 = new ArrayList<>() ; // Liste de sommmets
+        List<BRIDGE> bl1 = new ArrayList<>(); // Liste de liens
 
-
-        List<SUMMIT> l1 = new ArrayList<>() ;
-        List<BRIDGE> bl1 = new ArrayList<>();
         l1.add(s1);
         l1.add(s2);
         l1.add(s3);
@@ -66,12 +63,79 @@ public class GRAPHALGO {
         bl1.add(b6);
         bl1.add(b7);
         bl1.add(b8);
-        GRAPH g = new GRAPH(l1,true,bl1,true);*/
+        GRAPH g = new GRAPH(l1,bl1);
+        g.afficherGraph();
+        */
+
+
+        /* #### TEST CONSTRUCTEUR MATRICE D'ADJACENCE ####
+
+        boolean[][] adjacents = new boolean[5][5];
+        adjacents[1][3] = true; // 1 -> 3
+        adjacents[1][2] = true; // 1 -> 2
+        adjacents[2][0] = true; // 2 -> 0
+        adjacents[3][4] = true; // 3 -> 4
+        GRAPH g = new GRAPH(adjacents,false);
+        g.afficherGraph();
+        */
+
+        /* #### TEST CONSTRUCTEUR MATRICE FS ET APS ####
+
+        int[] FS = new int[14]; // nombre de liens + nombre de sommets +1 a cause de la case 0
+        int[] APS = new int[6]; // nombre de sommets +1
+
+        FS[1]=2;
+        FS[2]=3;
+        FS[3]=4;
+        FS[4]=0;
+        FS[5]=2;
+        FS[6]=3;
+        FS[7]=4;
+        FS[8]=0;
+        FS[9]=5;
+        FS[10]=0;
+        FS[11]=0;
+        FS[12]=4;
+        FS[13]=0;
+
+        APS[1]=1;
+        APS[2]=5;
+        APS[3]=9;
+        APS[4]=11;
+        APS[5]=12;
+
+        GRAPH g = new GRAPH(FS, APS);
+        g.afficherGraph();
+        */
+
+        /* #### TEST CONSTRUCTEUR AVEC FICHIER TEXT ####
+        GRAPH g = new GRAPH("entreeAuClavier");
+        g.afficherGraph();
+        */
+
+        /* #### TEST ECRITURE GRAPH DANS UN FICHIER TEXT ####
+        GRAPH g = new GRAPH("entreeAuClavier");
+        g.afficherGraph();
+        g.sortieFichier("sortieGraph2");
+        */
+
+        int[] prufer = new int[7];
+        prufer[0]=2;
+        prufer[1]=2;
+        prufer[2]=2;
+        prufer[3]=5;
+        prufer[4]=6;
+        prufer[5]=5;
+        prufer[6]=7;
+        GRAPH g = new GRAPH();
+        g.pruferToGraph(prufer).afficherGraph();
+
+
         //g.djikstra(g.getSpecificSummitByKey(1)).afficherGraph();
 
         //GRAPH g1 = new GRAPH("entreeAuClavier");
-        GRAPH g1 = new GRAPH();
-        g1.afficherGraph();
+        //GRAPH g1 = new GRAPH();
+        //g1.afficherGraph();
 
 
 
