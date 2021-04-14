@@ -22,6 +22,7 @@ public class GRAPH {
     private boolean oriented, valued;
     private static List<SUMMIT> savedSummits;
     private static List<BRIDGE> savedBridges;
+    private static int autocountSaved;
 
     //CONSTRUCTORS
     public GRAPH(List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges, boolean valued) {
@@ -764,7 +765,7 @@ public class GRAPH {
     }
 
     public void Kruskal(GRAPH reduit) {
-
+        if (this.valued=false) reduit.valued=false;
         int n = summits.size();
         int[] prem = new int[n + 1];
         int[] pilch = new int[n + 1];
@@ -982,6 +983,7 @@ public class GRAPH {
         JButton tarjan = new JButton("Appliquer Tarjan");
         JButton dijkstra = new JButton("Appliquer Dijkstra");
         JButton kruskal = new JButton("Appliquer Kruskal");
+        JButton reset = new JButton("Remise à zero");
         JButton exit = new JButton("Quitter");
 
         userInterface.setSize(800,300);
@@ -992,6 +994,7 @@ public class GRAPH {
         userInterface.getContentPane().add(dijkstra);
         userInterface.getContentPane().add(tarjan);
         userInterface.getContentPane().add(kruskal);
+        userInterface.getContentPane().add(reset);
         userInterface.getContentPane().add(exit);
         userInterface.setLocation(1000,300);
 
@@ -1001,8 +1004,7 @@ public class GRAPH {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                SUMMIT s = new SUMMIT();
-                summits.add(s);
+                summits.add(new SUMMIT(summits.size()+1));
                 frame.dispose();
                 userInterface.dispose();
                 afficherGraph();
@@ -1016,6 +1018,7 @@ public class GRAPH {
             public void actionPerformed(ActionEvent e) {
                 savedSummits=List.copyOf(summits);
                 savedBridges=List.copyOf(bridges);
+                autocountSaved=summits.size();
             }
         });
 
@@ -1024,12 +1027,28 @@ public class GRAPH {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                SUMMIT.setAutoCount(autocountSaved);
                 summits=List.copyOf(savedSummits);
                 bridges=List.copyOf(savedBridges);
                 frame.dispose();
                 userInterface.dispose();
                 afficherGraph();
+            }
+        });
+
+        reset.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                SUMMIT.setAutoCount(0);
+                bridges.clear();
+                summits.clear();
+                frame.dispose();
+                userInterface.dispose();
+                afficherGraph();
+
             }
         });
 

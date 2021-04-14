@@ -16,6 +16,11 @@ public class SUMMIT {
         this.info = s;
     }
 
+    public SUMMIT(int i) {
+        autoCount=i;
+        key = i;
+    }
+
     public SUMMIT() {
         this(null);
     }
@@ -35,6 +40,8 @@ public class SUMMIT {
     public void setInfo(Object info) {
         this.info = info;
     }
+
+    public static void setAutoCount(int i){autoCount=0;}
 
     //OUTPUT
     @Override
