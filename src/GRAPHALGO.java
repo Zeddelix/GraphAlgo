@@ -25,9 +25,9 @@ public class GRAPHALGO {
 
     public static void main(String args[]) throws IOException {
 
-        /* ### TEST CONSTRUCTEUR DE BASE    ######
+         //### TEST CONSTRUCTEUR DE BASE    ######
 
-        SUMMIT s1 = new SUMMIT("1"); // Creation d'un graph pour les tests - 7 sommets et 8 liens
+        /*SUMMIT s1 = new SUMMIT("1"); // Creation d'un graph pour les tests - 7 sommets et 8 liens
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
         SUMMIT s4 = new SUMMIT ("4");
@@ -63,9 +63,9 @@ public class GRAPHALGO {
         bl1.add(b6);
         bl1.add(b7);
         bl1.add(b8);
-        GRAPH g = new GRAPH(l1,bl1);
-        g.afficherGraph();
-        */
+        GRAPH g = new GRAPH(l1,true,bl1,true);
+        g.afficherGraph();*/
+
 
 
         /* #### TEST CONSTRUCTEUR MATRICE D'ADJACENCE ####
@@ -113,10 +113,10 @@ public class GRAPHALGO {
         g.afficherGraph();
         */
 
-        /* #### TEST ECRITURE GRAPH DANS UN FICHIER TEXT ####
+        /* #### TEST ECRITURE GRAPH DANS UN FICHIER TEXT POUR SAUVEGARDE ####
         GRAPH g = new GRAPH("entreeAuClavier");
         g.afficherGraph();
-        g.sortieFichier("sortieGraph2");
+        g.sortieFichier("AfficheGrph");
         */
 
         /* #### TEST CONSTRUCTEUR DECODAGE PRUFER ####
@@ -132,7 +132,7 @@ public class GRAPHALGO {
         g.afficherGraph();
         */
 
-        /* #### TEST ALGORITHME DE TARJAN ####
+        // #### TEST ALGORITHME DE TARJAN ####
         SUMMIT s1 = new SUMMIT("1");
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
@@ -187,11 +187,10 @@ public class GRAPHALGO {
         bl1.add(b15);
         GRAPH g = new GRAPH(l1,bl1);
         g.afficherGraph();
-        g.tarjan().afficherGraph();
-        */
 
-        /* #### TEST ALGORITHME DE DJIKSTRA ####
-        SUMMIT s1 = new SUMMIT("1");
+
+        // #### TEST ALGORITHME DE DJIKSTRA ####
+        /*SUMMIT s1 = new SUMMIT("1");
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
         SUMMIT s4 = new SUMMIT ("4");
@@ -236,10 +235,10 @@ public class GRAPHALGO {
         bl1.add(b12);
 
         GRAPH g = new GRAPH(l1,true,bl1,true);
-        g.djikstra().afficherGraph();
+        g.afficherGraph();
         */
 
-        /* #### TEST ALGORITHME DE DJIKSTRA ####
+        /* #### TEST ALGORITHME DE KRUSKAL ####
 
         SUMMIT s1 = new SUMMIT("1");
         SUMMIT s2 = new SUMMIT("2");
@@ -288,7 +287,7 @@ public class GRAPHALGO {
         red.afficherGraph();
         */
 
-        help();
+
     }
     //Onglet d'explication
     public static void help() {

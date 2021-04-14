@@ -12,12 +12,16 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
+import static org.fusesource.hawtjni.runtime.Callback.reset;
+
 public class GRAPH {
     private List<SUMMIT> summits;
     private List<BRIDGE> bridges;
     private boolean[][] Adj;
     private int[] Aps, Fs;
     private boolean oriented, valued;
+    private static List<SUMMIT> savedSummits;
+    private static List<BRIDGE> savedBridges;
 
     //CONSTRUCTORS
     public GRAPH(List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges, boolean valued) {
@@ -173,11 +177,19 @@ public class GRAPH {
             if (line.charAt(0)=='#') line = br.readLine();
             this.valued = Boolean.parseBoolean(line); // valué ?
 
-
-            for (int i = 0; i < nombreSommet; i++) {
-                summitstxt.add(new SUMMIT());
+            if (this.summits==null ||this.summits.size()< nombreSommet){
+                for (int i = 0; i < nombreSommet; i++) {
+                    summitstxt.add(new SUMMIT());
+                }
+                this.summits = summitstxt;
             }
-            this.summits = summitstxt;
+            else {
+                for (int i = 0; i < nombreSommet; i++) {
+                    summitstxt.add(summits.get(i));
+                }
+                this.summits = summitstxt;
+            }
+
 
             while ((line = br.readLine()) != null) {
                 if (!line.contains("#")){
@@ -217,18 +229,40 @@ public class GRAPH {
         // ATTENTION si le fichier n'existe pas, il est crée
         try {
             String chaine = "";
+            String saveText = "";
             File file = new File(nomFichier + ".txt");
+            File save = new File("Sauvegarde.txt");
             if (!file.exists()) {
                 file.createNewFile();
+            }
+            if (!save.exists()) {
+                save.createNewFile();
             }
             chaine += "Valué : " + this.valued + "\n";
             chaine += "Orienté :" + this.oriented + "\n";
             chaine += "Liste de sommets : " + this.summits.toString() + "\n";
             chaine += "Liste des liens :" + this.bridges + "\n";
+            saveText += this.summits.size() + "\n" +  this.oriented + "\n" + this.valued + "\n";
+            if (this.valued==true){
+                for (int i=0 ; i< bridges.size(); i++){
+                    saveText+= bridges.get(i).getFirstSummit().getKey() + "," + bridges.get(i).getSecondSummit().getKey() + "," + bridges.get(i).getWeight()+"\n";
+                }
+            }
+            else {
+                for (int i = 0; i < bridges.size(); i++) {
+                    saveText += bridges.get(i).getFirstSummit().getKey() + "," + bridges.get(i).getSecondSummit().getKey() + "\n";
+                }
+            }
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(chaine);
             bw.close();
+
+            FileWriter fw2 = new FileWriter(save.getAbsoluteFile());
+            BufferedWriter bw2 = new BufferedWriter(fw2);
+            bw2.write(saveText);
+            bw2.close();
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -938,16 +972,29 @@ public class GRAPH {
         frame.getContentPane().add(vv);
         frame.pack();
         frame.setLocationRelativeTo(null);
+        frame.setLocation(100,100);
 
         JFrame userInterface = new JFrame("Interface utilisateur");
-        userInterface.setLayout(new GridLayout(2,1));
+        userInterface.setLayout(new GridLayout(4,2));
         JButton addSummit = new JButton("Ajouter un sommet");
         JButton addBridge = new JButton("Ajouter un lien");
-        userInterface.setLocationRelativeTo(frame);
-        userInterface.setSize(300,200);
-        userInterface.getContentPane().add(addBridge, BorderLayout.NORTH);
-        userInterface.getContentPane().add(addSummit, BorderLayout.NORTH);
-        userInterface.setLocation(1700,300);
+        JButton save = new JButton("Sauvegarder le Graphe");
+        JButton load = new JButton("Charger le Graphe");
+        JButton tarjan = new JButton("Appliquer Tarjan");
+        JButton dijkstra = new JButton("Appliquer Dijkstra");
+        JButton kruskal = new JButton("Appliquer Kruskal");
+        JButton exit = new JButton("Quitter");
+
+        userInterface.setSize(800,300);
+        userInterface.getContentPane().add(addSummit);
+        userInterface.getContentPane().add(addBridge);
+        userInterface.getContentPane().add(save);
+        userInterface.getContentPane().add(load);
+        userInterface.getContentPane().add(dijkstra);
+        userInterface.getContentPane().add(tarjan);
+        userInterface.getContentPane().add(kruskal);
+        userInterface.getContentPane().add(exit);
+        userInterface.setLocation(1000,300);
 
 
         addSummit.addActionListener(new ActionListener(){
@@ -963,7 +1010,77 @@ public class GRAPH {
             }
         });
 
-        userInterface.add(addSummit);
+        save.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                savedSummits=List.copyOf(summits);
+                savedBridges=List.copyOf(bridges);
+            }
+        });
+
+        load.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                summits=List.copyOf(savedSummits);
+                bridges=List.copyOf(savedBridges);
+                frame.dispose();
+                userInterface.dispose();
+                afficherGraph();
+            }
+        });
+
+        dijkstra.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                userInterface.dispose();
+                djikstra().afficherGraph();
+            }
+        });
+
+        kruskal.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                userInterface.dispose();
+                List<BRIDGE> blred = new ArrayList<>();
+                GRAPH red = new GRAPH(summits,false,blred,true);
+                Kruskal(red);
+                red.afficherGraph();
+            }
+        });
+
+        tarjan.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                userInterface.dispose();
+                tarjan().afficherGraph();
+            }
+        });
+
+        exit.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.err.println("Merci d'avoir utilisé notre programme !");
+                System.exit(0);
+            }
+        });
+
+
 
         addBridge.addActionListener(new ActionListener(){
 
