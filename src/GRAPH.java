@@ -825,56 +825,40 @@ public class GRAPH {
     }
 
 
-    public int[][] Dantzig() {
+    public int[] tabDistDantzig(int src) {
 
-        int[][] gr = matDist();
         int n = summits.size();
-        int[][] mat = new int[n][n];
+        int m = bridges.size();
+        int[] mat = new int[n];
+        for (int i = 0; i < n; ++i)
+            mat[i] = Integer.MAX_VALUE;
+        mat[src] = 0;
+
+        //int[][] gr = matDist();;
         for (int i = 1; i <= n; i++) {
-            for (int j = 1; i <= n; i++) {
-                if (i == j) {
-                    mat[i][i] = 0;
-                } else {
-                    mat[i][j] = Integer.MAX_VALUE;
-                }
+            for (int j = 0; j < m; j++) {
+                int u = bridges.get(j).getFirstSummit().getKey();
+                int v =  bridges.get(j).getSecondSummit().getKey();
+                int wei = bridges.get(j).getWeight();
+                if (mat[u-1] != Integer.MAX_VALUE && mat[u-1] + wei < mat[v-1])
+                    mat[v-1] = mat[u-1] + wei;
             }
         }
-        for (int k = 1; k <= n; k++) {
-            for (int i = 1; i < k; i++) {
-                int min1 = 0, min2 = 0;
-                for (int j = k; j >= 1; j--) {
-                    int valMin1 = gr[k + 1][j] + mat[j][i];
-                    int valMin2 = gr[i][j] + mat[j][k + 1];
-                    if (valMin1 < min1) {
-                        min1 = valMin1;
-                    }
-                    if (valMin2 < min2) {
-                        min2 = valMin2;
-                    }
-                }
-                mat[k + 1][i] = min1;
-                mat[i][k + 1] = min2;
-            }
-            int t = 0;
-            for (int j = k; j >= 1; j--) {
-                t = mat[k + 1][j] + mat[j][k + 1];
-            }
 
-            if (t < 0) {
-                break;
-            } else {
-                for (int i = 1; i <= k; i++) {
-                    for (int j = 1; j <= k; j++) {
-                        if (mat[i][j] > (mat[i][k + 1] + mat[k + 1][j])) {
-                            mat[i][j] = mat[i][k + 1] + mat[k + 1][j];
-                        }
-                    }
-                }
-            }
-        }
         return mat;
-
     }
+
+    public int[][] Dantzig(){
+        int n = summits.size();
+        int m = bridges.size();
+        int [][] res = new int[n][n];
+        for (int i = 0; i < res.length;i++){
+            res[i] = tabDistDantzig(i);
+        }
+
+        return res;
+    }
+
 
     public ArrayList<Integer> toPruferCode() {
 
