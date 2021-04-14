@@ -876,7 +876,6 @@ public class GRAPH {
             SUMMIT voisin = getNeighbour(s);
             prufer.add(voisin.getKey());
             bridges.removeIf(b -> b.contains(s));
-            //summits.remove(s);
 
         }
         return prufer;
