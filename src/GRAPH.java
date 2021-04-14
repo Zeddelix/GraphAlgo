@@ -1125,7 +1125,7 @@ public class GRAPH {
                 JDialog d = new JDialog(frame, "Rang des sommets");
                 d.setLocation(600,600);
                 for (int i=0; i<rank.length;i++){
-                    s+="Le sommet "+i+" a pour rang "+rank[i]+"\n";
+                    s+="Le sommet "+ (i+1) +" a pour rang "+rank[i]+"\n";
                     JTextArea l = new JTextArea(s);
                     d.add(l);
                 }

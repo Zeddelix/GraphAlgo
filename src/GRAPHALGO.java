@@ -25,6 +25,9 @@ public class GRAPHALGO {
 
     public static void main(String args[]) throws IOException {
 
+        GRAPH g = new GRAPH();
+        g.afficherGraph();
+
          //### TEST CONSTRUCTEUR DE BASE    ######
 
         /*SUMMIT s1 = new SUMMIT("1"); // Creation d'un graph pour les tests - 7 sommets et 8 liens
@@ -133,7 +136,7 @@ public class GRAPHALGO {
         */
 
         // #### TEST ALGORITHME DE TARJAN ####
-        SUMMIT s1 = new SUMMIT("1");
+        /*SUMMIT s1 = new SUMMIT("1");
         SUMMIT s2 = new SUMMIT("2");
         SUMMIT s3 = new SUMMIT ("3");
         SUMMIT s4 = new SUMMIT ("4");
@@ -185,9 +188,10 @@ public class GRAPHALGO {
         bl1.add(b13);
         bl1.add(b14);
         bl1.add(b15);
-        GRAPH g = new GRAPH(l1,true,bl1);
+        GRAPH g = new GRAPH(l1,true,bl1);*/
 
-        g.afficherGraph();
+
+
 
 
         // #### TEST ALGORITHME DE DJIKSTRA ####
@@ -290,44 +294,5 @@ public class GRAPHALGO {
 
 
     }
-    //Onglet d'explication
-    public static void help() {
-        System.out.println("Manuel d'utilisation :\n");
-        System.out.println("Constructeurs: ");
-        System.out.println("\t- GRAPH() : Constructeur par défaut. Créé un graphique vide, sans sommets ni liens qui n'est pas orienté ni valué.");
-        System.out.println("\t- GRAPH(List<SUMMIT> summits, List<BRIDGE> bridges) : Constructeur qui créé un graphique avec la liste de sommets et de liens donnée en paramètre. Le graphique ne sera ni orienté ni valué.");
-        System.out.println("\t- GRAPH(List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) : Constructeur qui créé un graphique avec la liste de sommets et de liens donnée en paramètre. Le graphique sera orienté ou non en fonction du bouléen donnée en paramètre. Il ne sera pas valué.");
-        System.out.println("\t- GRAPH(List<SUMMIT> summits, List<BRIDGE> bridges, boolean valued) : Constructeur qui créé un graphique avec la liste de sommets et de liens donnée en paramètre. Le graphique sera valué ou non en fonction du bouléen donnée en paramètre. Il ne sera pas orienté.");
-        System.out.println("\t- GRAPH(List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges, boolean valued) : Constructeur qui créé un graphique avec la liste de sommets et de liens donnée en paramètre. Le graphique sera orienté/valué ou non en fonction des deux bouléen donnée en paramètre.");
-        System.out.println("\t- GRAPH(int[] Fs, int[] Aps) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Il ne sera ni orienté ni valué.");
-        System.out.println("\t- GRAPH(int[] Fs, boolean oriented, int[] Aps) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Le graphique sera orienté ou non en fonction du bouléen donnée en paramètre. Il ne sera pas valué.");
-        System.out.println("\t- GRAPH(int[] Fs, int[] Aps, boolean valued) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Le graphique sera valué ou non en fonction du bouléen donnée en paramètre. Il ne sera pas orienté.");
-        System.out.println("\t- GRAPH(int[] Fs, boolean oriented, int[] Aps, boolean valued) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Le graphique sera orienté/valué ou non en fonction des deux bouléen donnée en paramètre.");
-        System.out.println("\t- GRAPH(boolean[][] adjacents, boolean oriented) : Constructeur qui créé un graphique à partir de la matrice d'adjacence. Le graphique sera orienté ou non en fonction du bouléen donnée en paramètre. Il ne sera pas valué.");
-        System.out.println("\t- GRAPH(ArrayList<Integer> d_tableauPrufer) : Constructeur qui créé un graphique a partir d'un tableau de prufer. Le tableau de prufer continue un graphique compressé.");
-        System.out.println("\t- GRAPH(String nomFichier) : Constructeur qui créé un graphique à partir d'un fichier texte.");
-        System.out.println("Ajout & suppression: ");
-        System.out.println("\t- addBridge : GRAPH.addBridge(BRIDGE lienÀAjouter);\n\t\tCette méthode permet d'ajouter un lien au tableau de liens du graphique par le biais de la classe BRIDGE. L'objet BRIDGE contient le sommet d'origine, le sommet cible ainsi que le poids de la liaison.");
-        System.out.println("\t- addSummit : GRAPH.addSummit(SUMMIT sommetÀAjouter;\n\t\tCette méthode permet d'ajouter un sommet au tableau de sommet du graphique par le biais de la classe SUMMIT. L'objet SUMMIT contien le numéro du sommet ainsi que l'information qu'on lui attribue.");
-        System.out.println("\t- removeBridge : GRAPH.removeBridge(BRIDGE lienÀRetier;\n\t\tCette méthode permet de retirer un lien au tableau de liens du graphique en lui donnant celui à supprimer.");
-        System.out.println("\t- removeSummit : GRAPH.removeSummit(SUMMIT sommetÀRetirer;\n\t\tCette méthode permet de retirer un sommet au tableau de sommets du graphique en lui donnant celui à supprimer.");
-        System.out.println("Accesseurs :");
-        System.out.println("\t- getBridges : GRAPH.getBridges();\n\t\tCette méthode nous permet de récupérer le tableau complet de lien de notre graphique.");
-        System.out.println("\t- getSummits : GRAPH.getSummits();\n\t\tCette méthode nous permet de récupérer le tableau complet de sommet de notre graphique.");
-        System.out.println("\t- isOriented : GRAPH.isOriented();\n\t\tCette méthode nous renvoie un boolean qui traduit son orientation.");
-        System.out.println("\t- isValued : GRAPH.isValued();\n\t\tCette méthode renvoie un boolean qui traduit sa valuation.");
-        System.out.println("\t- getFs : GRAPH.getFS();\n\t\tCette méthode permet de récupérer le tableau FS de notre graphique.");
-        System.out.println("\t- getAps : GRAPH.getFS();\n\t\tCette méthode permet de récupérer le tableau APS de notre graphique.");
-        System.out.println("\t- getAdjacent : GRAPH.getFS();\n\t\tCette méthode permet de récupérer le tableau d'adjacences de notre graphique.");
-        System.out.println("Méthodes : ");
-        System.out.println("\t- djikstra : GRAPH.djikstra();\n\t\tCette méthode permet de calculer le chemin le plus court selon l'agorithme de djikstra. Il nous renvoie le graphique avec seulement les liens utiles du graphique d'ou est appliqué la méthode.");
-        System.out.println("\t- kruskal : GRAPH.kruskal()\n\t\tCette méthode permet de calculer l'arbre couvrant minimum du graphique. Il nous renvoie le graphique sans boucle du graphique d'ou est appliqué la méthode.");
-        System.out.println("\t- tarjan : GRAPH.tarjan();\n\t\tCette méthode permet de faire un graph réduit selon l'agorithme de tarjan. Il nous renvoie le graphique réduit du graphique d'ou est appliqué la méthode.");
-        System.out.println("\t- toPruferCode : GRAPH.toPruferCode();\n\t\tCette méthode permet de convertir le graphique en un tableau de compressions.");
-        System.out.println("\t- pruferToGraph : GRAPH.pruferToGraph();\n\t\tCette méthode permet de créé un graphique à partir du tableau de compression d'un graphique.");
-        System.out.println("Sorties:");
-        System.out.println("\t- toString : GRAPH.toString();\n\t\tCette méthode permet d'afficher le status du graphique. Il nous affiche donc son tableau de sommets et de liens");
-        System.out.println("\t- sortieFichier : sortieFichier(STRING \"cheminDuFicherAinsiQueSonNomEtSonExtension\");\n\t\tCette méthode sauvegarde le graphique dans un fichier passé en paramètre sous le format défini pour la lecture de graphique depuis un fichier (voir le fichier\"entreeAuClavier.txt\")");
-        System.out.println("\t- afficherGraph : GRAPH.afficherGraph()\n\t\tCette méthode nous permet d'afficher l'interface graphique de notre graphique ainsi que l'interface utilisateur afin que l'on puisse interagir avec celui-ci.");
-    }
+
 }
