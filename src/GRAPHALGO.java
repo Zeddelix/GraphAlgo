@@ -185,7 +185,8 @@ public class GRAPHALGO {
         bl1.add(b13);
         bl1.add(b14);
         bl1.add(b15);
-        GRAPH g = new GRAPH(l1,bl1);
+        GRAPH g = new GRAPH(l1,true,bl1);
+
         g.afficherGraph();
 
 

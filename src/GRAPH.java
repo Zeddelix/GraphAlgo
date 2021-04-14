@@ -926,6 +926,40 @@ public class GRAPH {
         return answer;
     }
 
+    public boolean Contain(int[] A, int B) {
+        boolean answer = false;
+        for (int i = 0; i < A.length; i++) {
+            if (A[i] == B) answer = true;
+        }
+        return answer;
+    }
+
+    public int[] Rank(){
+        int[] rank = new int[summits.size()];
+        boolean[] Pred = new boolean[summits.size()];
+        Arrays.fill(Pred,false);
+        Arrays.fill(rank, Integer.MAX_VALUE);
+
+        for (SUMMIT s : summits){
+            for (BRIDGE b : bridges){
+                if (b.getSecondSummit()==s) Pred[s.getKey()-1] = true;
+            }
+        }
+        for (int i=0 ; i<Pred.length;i++){
+            if (Pred[i]==false) rank[i]= 0;
+        }
+        while (Contain(rank, Integer.MAX_VALUE)){
+            for (BRIDGE b : bridges){
+                if (rank[b.getFirstSummit().getKey()-1] != Integer.MAX_VALUE){
+                    if (rank[b.getFirstSummit().getKey()-1] +1 < rank[b.getSecondSummit().getKey()-1]) rank[b.getSecondSummit().getKey()-1]=rank[b.getFirstSummit().getKey()-1]+1;
+                }
+            }
+
+        }
+        return rank;
+
+    }
+
 
     @Override
     public String toString() {
@@ -984,6 +1018,8 @@ public class GRAPH {
         JButton dijkstra = new JButton("Appliquer Dijkstra");
         JButton kruskal = new JButton("Appliquer Kruskal");
         JButton reset = new JButton("Remise à zero");
+        JButton rank = new JButton("Rang des sommets");
+        JButton help = new JButton("Manuel d'utilisation");
         JButton exit = new JButton("Quitter");
 
         userInterface.setSize(800,300);
@@ -994,7 +1030,9 @@ public class GRAPH {
         userInterface.getContentPane().add(dijkstra);
         userInterface.getContentPane().add(tarjan);
         userInterface.getContentPane().add(kruskal);
+        userInterface.getContentPane().add(rank);
         userInterface.getContentPane().add(reset);
+        userInterface.getContentPane().add(help);
         userInterface.getContentPane().add(exit);
         userInterface.setLocation(1000,300);
 
@@ -1074,6 +1112,75 @@ public class GRAPH {
                 GRAPH red = new GRAPH(summits,false,blred,true);
                 Kruskal(red);
                 red.afficherGraph();
+            }
+        });
+
+        rank.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String s = "";
+                int[] rank = Rank();
+                JDialog d = new JDialog(frame, "Rang des sommets");
+                d.setLocation(600,600);
+                for (int i=0; i<rank.length;i++){
+                    s+="Le sommet "+i+" a pour rang "+rank[i]+"\n";
+                    JTextArea l = new JTextArea(s);
+                    d.add(l);
+                }
+                d.setSize(800, 400);
+                d.setVisible(true);
+            }
+        });
+
+        help.addActionListener(new ActionListener(){
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String s="";
+                s+="Manuel d'utilisation :\n";
+                s+="Constructeurs: \n";
+                s+="\t- GRAPH() : Constructeur par défaut. Créé un graphique vide, sans sommets ni liens qui n'est pas orienté ni valué.\n";
+                s+="\t- GRAPH​(List<SUMMIT> summits, List<BRIDGE> bridges) : Constructeur qui créé un graphique avec la liste de sommets et de liens donnée en paramètre. Le graphique ne sera ni orienté ni valué.\n";
+                s+="\t- GRAPH​(List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges) : Constructeur qui créé un graphique avec la liste de sommets et de liens donnée en paramètre. Le graphique sera orienté ou non en fonction du bouléen donnée en paramètre. Il ne sera pas valué.\n";
+                s+="\t- GRAPH​(List<SUMMIT> summits, List<BRIDGE> bridges, boolean valued) : Constructeur qui créé un graphique avec la liste de sommets et de liens donnée en paramètre. Le graphique sera valué ou non en fonction du bouléen donnée en paramètre. Il ne sera pas orienté.\n";
+                s+="\t- GRAPH​(List<SUMMIT> summits, boolean oriented, List<BRIDGE> bridges, boolean valued) : Constructeur qui créé un graphique avec la liste de sommets et de liens donnée en paramètre. Le graphique sera orienté/valué ou non en fonction des deux bouléen donnée en paramètre.\n";
+                s+="\t- GRAPH​(int[] Fs, int[] Aps) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Il ne sera ni orienté ni valué.\n";
+                s+="\t- GRAPH​(int[] Fs, boolean oriented, int[] Aps) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Le graphique sera orienté ou non en fonction du bouléen donnée en paramètre. Il ne sera pas valué.\n";
+                s+="\t- GRAPH​(int[] Fs, int[] Aps, boolean valued) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Le graphique sera valué ou non en fonction du bouléen donnée en paramètre. Il ne sera pas orienté.\n";
+                s+="\t- GRAPH​(int[] Fs, boolean oriented, int[] Aps, boolean valued) : Constructeur qui créé un graphique a partir des tableaux FS et APS. Le graphique sera orienté/valué ou non en fonction des deux bouléen donnée en paramètre.\n";
+                s+="\t- GRAPH​(boolean[][] adjacents, boolean oriented) : Constructeur qui créé un graphique à partir de la matrice d'adjacence. Le graphique sera orienté ou non en fonction du bouléen donnée en paramètre. Il ne sera pas valué.\n";
+                s+="\t- GRAPH​(String nomFichier) : Constructeur qui créé un graphique à partir d'un fichier texte.\n";
+                s+="Ajout & suppression: \n";
+                s+="\t- addBridge : GRAPH.addBridge(BRIDGE lienÀAjouter);\n\t\tCette méthode permet d'ajouter un lien au tableau de liens du graphique par le biais de la classe BRIDGE. L'objet BRIDGE contient le sommet d'origine, le sommet cible ainsi que le poids de la liaison.\n";
+                s+="\t- addSummit : GRAPH.addSummit(SUMMIT sommetÀAjouter;\n\t\tCette méthode permet d'ajouter un sommet au tableau de sommet du graphique par le biais de la classe SUMMIT. L'objet SUMMIT contien le numéro du sommet ainsi que l'information qu'on lui attribue.\n";
+                s+="\t- removeBridge : GRAPH.removeBridge(BRIDGE lienÀRetier;\n\t\tCette méthode permet de retirer un lien au tableau de liens du graphique en lui donnant celui à supprimer.\n";
+                s+="\t- removeSummit : GRAPH.removeSummit(SUMMIT sommetÀRetirer;\n\t\tCette méthode permet de retirer un sommet au tableau de sommets du graphique en lui donnant celui à supprimer.\n";
+                s+="Accesseurs :\n";
+                s+="\t- getBridges : GRAPH.getBridges();\n\t\tCette méthode nous permet de récupérer le tableau complet de lien de notre graphique.\n";
+                s+="\t- getSummits : GRAPH.getSummits();\n\t\tCette méthode nous permet de récupérer le tableau complet de sommet de notre graphique.\n";
+                s+="\t- isOriented : GRAPH.isOriented();\n\t\tCette méthode nous renvoie un boolean qui traduit son orientation.\n";
+                s+="\t- isValued : GRAPH.isValued();\n\t\tCette méthode renvoie un boolean qui traduit sa valuation.\n";
+                s+="\t- getFs : GRAPH.getFS();\n\t\tCette méthode permet de récupérer le tableau FS de notre graphique.\n";
+                s+="\t- getAps : GRAPH.getFS();\n\t\tCette méthode permet de récupérer le tableau APS de notre graphique.\n";
+                s+="\t- getAdjacent : GRAPH.getFS();\n\t\tCette méthode permet de récupérer le tableau d'adjacences de notre graphique.\n";
+                s+="Méthodes : \n";
+                s+="\t- djikstra : GRAPH.djikstra();\n\t\tCette méthode permet de calculer le chemin le plus court selon l'agorithme de djikstra. Il nous renvoie le graphique avec seulement les liens utiles du graphique d'ou est appliqué la méthode.\n";
+                s+="\t- kruskal : GRAPH.kruskal()\n\t\tCette méthode permet de calculer l'arbre couvrant minimum du graphique. Il nous renvoie le graphique sans boucle du graphique d'ou est appliqué la méthode.\n";
+                s+="\t- tarjan : GRAPH.tarjan();\n\t\tCette méthode permet de faire un graph réduit selon l'agorithme de tarjan. Il nous renvoie le graphique réduit du graphique d'ou est appliqué la méthode.\n";
+                s+="\t- toPruferCode : GRAPH.toPruferCode();\n\t\tCette méthode permet de convertir le graphique en un tableau de compressions.\n";
+                s+="\t- pruferToGraph : GRAPH.pruferToGraph();\n\t\tCette méthode permet de créé un graphique à partir du tableau de compression d'un graphique.\n";
+                s+="Sorties:\n";
+                s+="\t- toString : GRAPH.toString();\n\t\tCette méthode permet d'afficher le status du graphique. Il nous affiche donc son tableau de sommets et de liens.\n";
+                s+="\t- sortieFichier : sortieFichier(STRING \"cheminDuFicherAinsiQueSonNomEtSonExtension\");\n\t\tCette méthode sauvegarde le graphique dans un fichier passé en paramètre sous le format défini pour la lecture de graphique depuis un fichier (voir le fichier\"entreeAuClavier.txt\").\n";
+                s+="\t- afficherGraph : GRAPH.afficherGraph()\n\t\tCette méthode nous permet d'afficher l'interface graphique de notre graphique ainsi que l'interface utilisateur afin que l'on puisse interagir avec celui-ci.\n";
+                JDialog d = new JDialog(frame, "Manuel d'utilisation");
+                JTextArea l = new JTextArea(s);
+                d.add(l);
+                d.setSize(1700, 1000);
+                d.setVisible(true);
             }
         });
 
